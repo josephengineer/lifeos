@@ -5,7 +5,7 @@ work while decisions are pending; stop only dependent implementation or operatio
 
 | ID | Decision | Recommended proposal | Needed before |
 | --- | --- | --- | --- |
-| D01 | Repository bootstrap | Approve empty initial main commit, then feature PR; preserve human merge gate | Remote initial PR |
+| D01 | Repository bootstrap | Approved and executed: empty main commit only, foundation branch push and draft PR; no merge approval | Completed bootstrap; PR review remains open |
 | D02 | License and rights holder | Keep private/no open-source grant; confirm proprietary notice and ownership | External contributions/distribution |
 | D03 | Stack and architecture | Accept ADRs 0001-0004, Expo + Supabase modular monolith | Phase 1 implementation |
 | D04 | Initial launch audience/regions | Individual adults first; choose jurisdictions and hosting region with privacy review | Provider provisioning/beta |
@@ -19,6 +19,7 @@ work while decisions are pending; stop only dependent implementation or operatio
 | D12 | Brand/accessibility | Approve design direction; target accessible English-only launch | Shared UI components |
 | D13 | Support/security ownership | Confirm reporting contact, incident owner and emergency authority | Public beta |
 | D14 | Phase 1 scope | Approve ordered backlog without starting later modules | Application scaffolding |
+| D15 | Session revocation boundary | Select and test enforcement for issued JWTs on APIs, direct DB/storage and client caches; do not assume sign-out instantly invalidates access tokens | P1-10 and identity release gate |
 
 Commercial prices, legal compliance, integration availability and security assurance
 are explicitly unresolved. No paid purchase, deployment, permissions change or

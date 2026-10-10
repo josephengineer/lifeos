@@ -509,8 +509,8 @@
     "capability": "Document-linked tasks and reminders",
     "description": "Create a linked task/reminder only after confirming its suggested details.",
     "priority": "P1",
-    "phase": 2,
-    "dependencies": "ID-001; private storage and worker runtime",
+    "phase": 3,
+    "dependencies": "DOC-001; TASK-001; TASK-007",
     "story": "As an account holder, I want support for document-linked tasks and reminders so I can find and manage my private documents.",
     "acceptance": "Create a linked task/reminder only after confirming its suggested details.",
     "status": "Planned"

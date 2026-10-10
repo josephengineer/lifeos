@@ -8,15 +8,13 @@ Never force-push, overwrite important branches or bypass failing checks.
 
 ## Empty-repository bootstrap
 
-The existing private repository has no commits or main branch. The prepared
-foundation lives on `codex/phase-0-foundation`. A PR requires an actual base branch
-with shared history. Obtain founder approval for a minimal empty initial commit
-on main, then replay the foundation commits onto that base on the feature branch,
-push both without force, and open the documentation PR. No product or foundation
-feature changes should be committed directly to main. Reinspect remote refs
-before bootstrap; if somebody populated the repository, preserve that history
-and adapt the branch normally. Do not push the orphan feature branch first and
-accidentally make it the only/default integration branch.
+Completed with explicit founder approval: main contains only empty bootstrap
+commit `cdc1d64cbf47c71b3af1573032cddb51f59c43dc`. The foundation is on
+`codex/phase-0-foundation` in [draft PR #19](https://github.com/josephengineer/lifeos/pull/19).
+No documentation or application files were placed directly on main. The original
+local-only history was preserved locally; the published foundation was replayed
+with GitHub noreply author metadata and shared ancestry. No force push was used.
+This bootstrap approval does not authorize a merge or Phase 1 implementation.
 
 ## Founder branch-protection checklist
 
@@ -57,6 +55,24 @@ In Review, Blocked and Done. Ready needs explicit scope and resolved dependencie
 Blocked records an owner/action; Done requires tests, CI, review and approved merge.
 Do not make the board public. Project authorization is separate from repository
 access; record inability to provision rather than claiming a board exists.
+
+### Resolving the missing Projects permission
+
+The existing credential was denied Projects access. No scope changes or alternate
+credentials were attempted. To proceed manually, the founder can open their GitHub
+profile, choose Projects -> New project -> Board, name it LifeOS, and verify its
+visibility is Private in project settings. Configure the six Status values above,
+add issues #1-18 and PR #19, and link the board to this repository. Keep Phase 1 in
+Backlog until approved, and Phase 0 In Review while the PR remains unmerged.
+See [GitHub's project creation guide](https://docs.github.com/en/issues/planning-and-tracking-with-projects/creating-projects/creating-a-project).
+
+If API management is desired later, the founder must explicitly authorize an
+appropriate credential. For classic tokens, `read:project` permits reads and
+`project` permits reads and mutations; use the supported least-privilege equivalent
+for other credential types. Update authentication through the normal credential
+manager, never by pasting a token into chat or committing it. This permission is
+optional for the current PR; no bypass or permission change is part of this task.
+See [GitHub's Projects API authentication guidance](https://docs.github.com/en/issues/planning-and-tracking-with-projects/automating-your-project/using-the-api-to-manage-projects).
 
 Official guidance: [protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
 and [Actions security](https://docs.github.com/en/actions/reference/security/secure-use).

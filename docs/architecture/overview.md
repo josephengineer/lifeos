@@ -51,6 +51,8 @@ the client dependency graph. Tests verify domain rules without devices or servic
 4. Upload intent binds a random object key, workspace, expected size/type and
    short expiry. File bytes land in private quarantine. A worker validates and
    scans before promotion; preview and extraction consume only accepted files.
+   Finalization freezes a server-verified object version; replacements get a new
+   quarantine flow, so bytes cannot be swapped after the security scan.
 5. Committed work emits an outbox job. Workers claim leases, recheck authorization
    and consent, use bounded retry/backoff and record a redacted outcome.
 6. AI sees only authorized necessary content after consent and scan approval.
@@ -59,6 +61,13 @@ the client dependency graph. Tests verify domain rules without devices or servic
 Native session storage, camera capture, push registration and file selection use
 platform adapters. Web session strategy must address XSS/CSRF and be validated
 before implementation. Do not assume web storage matches native secure storage.
+
+Session invalidation is a separate authorization requirement from JWT signature
+validation. Supabase sign-out does not instantly invalidate every issued access
+token. Phase 1 must choose and test a revocation strategy covering custom APIs,
+direct database/storage access and cached client data. Do not promise immediate
+revocation from a client-side logout alone; see the pending session decision D15
+and [official session guidance](https://supabase.com/docs/guides/auth/sessions).
 
 ## Reliability and operations
 

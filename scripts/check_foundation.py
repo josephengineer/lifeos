@@ -30,6 +30,7 @@ REQUIRED = [
     'docs/engineering/setup.md', 'docs/engineering/git-workflow.md',
     'docs/engineering/testing.md', 'docs/engineering/ci.md',
     'docs/engineering/release.md', 'docs/engineering/verification.md',
+    'docs/engineering/foundation-review.md',
     'docs/adr/README.md', 'docs/adr/0001-modular-monolith.md',
     'docs/adr/0002-isolation.md', 'docs/adr/0003-ai-and-actions.md',
     'docs/adr/0004-foundation-tooling.md', 'scripts/check_foundation.py',

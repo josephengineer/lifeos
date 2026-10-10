@@ -14,7 +14,11 @@ are introduced. All product features remain Planned. See
 
 Review [founder decisions](decisions.md), especially architecture, bootstrap,
 licensing, private-repository protection availability and human approval ownership.
-The repository needs an approved initial base commit before this PR can be opened.
+The founder-approved empty main bootstrap is complete and
+[draft PR #19](https://github.com/josephengineer/lifeos/pull/19) is open. Its live
+description contains the complete per-module count and issue/check summaries.
+See the [post-creation review](../engineering/foundation-review.md) for corrected
+documentation defects and remaining architecture/security decisions.
 
 Security: no secrets or real user data; CI does not receive secrets or deploy.
 Rollback: reverting the foundation commit removes documents/tooling only, with

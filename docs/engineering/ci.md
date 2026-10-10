@@ -5,7 +5,10 @@
 `.github/workflows/foundation.yml` runs on pull requests, main/codex pushes and
 manual dispatch. It grants contents:read only, disables persisted checkout
 credentials, pins checkout to a full commit SHA, sets a timeout and cancels stale
-runs. It runs the dependency-free repository validator and whitespace check.
+runs. It runs the dependency-free repository validator and checks committed
+whitespace using `git show --format= --check --first-parent HEAD`. Checkout fetches
+two commits so the first parent of a PR merge commit is available. A clean-worktree
+`git diff --check` would not inspect the committed PR change and is not the CI gate.
 The hosted runner provides Python; the validator requires 3.11+. No secrets or
 application dependencies are needed. Dependabot tracks action updates weekly.
 

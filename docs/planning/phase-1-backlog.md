@@ -121,8 +121,12 @@ Desired behavior/scope: reviewed web session approach and native secure-storage
 adapter, expiry/refresh and logout cleanup; record decision before integration.
 Acceptance: expired/revoked sessions fail safely; background/resume works;
 logout clears local private state; credentials never appear in logs.
-Dependencies: P1-04, P1-07. Tests: expiry/refresh failure, logout and platform adapter tests.
+Dependencies: P1-04, P1-07, D15. Tests: expiry/refresh failure, logout and platform
+adapter tests; replay an already-issued JWT after logout/revocation against both
+custom APIs and direct database/storage paths. Record the measured denial boundary.
 Security/privacy: review XSS/CSRF implications and storage limitations explicitly.
+Choose the server/RLS enforcement approach needed to meet the agreed revocation
+semantics; stopping refresh or clearing client storage alone is insufficient.
 
 ## P1-11: Add email registration and verification
 

@@ -38,6 +38,7 @@ from pending GitHub and product work.
 - [CI design](engineering/ci.md)
 - [Release, rollback and incidents](engineering/release.md)
 - [Verification record](engineering/verification.md)
+- [Post-creation PR review](engineering/foundation-review.md)
 
 ## Status vocabulary
 

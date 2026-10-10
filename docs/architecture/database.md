@@ -12,7 +12,7 @@ Status: Conceptual proposal; no migrations or tables have been created.
 | preferences | user_id, theme, notification/AI preferences, locale=en | 1 |
 | documents | id, workspace_id, owner_id, title, category, lifecycle | 2 |
 | document_versions | id, workspace_id, document_id, object key, hash, size, scan state | 2 |
-| extracted_fields | version_id, field key/value, source location, confidence, confirmation | 2 |
+| extracted_fields | workspace_id, version_id, field key/value, source location, confidence, confirmation | 2 |
 | tags/document_tags | workspace-scoped tag and document links | 2 |
 | tasks | id, workspace_id, title, parent_id, due date/instant, status | 3 |
 | reminders | id, workspace_id, task_id, zone, recurrence, next due instant | 3 |
@@ -26,14 +26,18 @@ Status: Conceptual proposal; no migrations or tables have been created.
 | integrations | workspace_id, provider, scope and consent; server-only token reference | 6 |
 | action_proposals/approvals/executions | payload hash, approver, expiry, outcome and idempotency key | 7 |
 | outbox_jobs | type, workspace_id, reference IDs, state, attempts, lease, next_attempt_at | 2+ |
-| audit_events | workspace_id, actor, action, target ID, time, redacted outcome | 1+ |
+| audit_events | scope type, workspace_id or account user_id, actor, action, target ID, time, redacted outcome | 1+ |
 | export/deletion_requests | user_id, verified request, stage, retries, completion evidence | 4 |
 | billing_accounts/entitlements | workspace_id, provider refs, plan, event version | 4 |
 
 ## Invariants
 
-Every user-owned business row has a non-null workspace ID. Unique `(workspace_id,
-id)` parent keys and composite foreign keys prevent cross-workspace relationships.
+Workspace-owned domain rows have a non-null workspace ID. Account-level profiles,
+preferences and account export/deletion requests instead use the authenticated
+user ID and owner-only policies. Audit records declare account or workspace scope,
+with a constraint requiring exactly the corresponding scope key. Never authorize
+account records by a client-selected workspace. Unique `(workspace_id, id)` parent
+keys and composite foreign keys prevent cross-workspace relationships.
 Membership is queried from authoritative database state, not client claims.
 One personal workspace per owner at launch uses a partial unique index; provisioning
 identity/profile/workspace/membership is idempotent and transactionally consistent.
@@ -41,7 +45,8 @@ Invitation and role-management APIs do not exist until collaboration is approved
 
 Enable default-deny RLS on exposed tables and apply both read predicates and
 write `WITH CHECK` constraints. Clients cannot mutate roles, owner IDs, billing
-entitlements or audit events. Test anonymous, owner, other user, revoked member
+entitlements, scan/processing states, approved hashes or audit events. Test
+anonymous, owner, other user, revoked member
 and privileged job paths. Policies should avoid recursive membership lookups.
 Any security-definer function gets fixed search_path, narrow grants and review.
 
@@ -49,6 +54,13 @@ Storage keys use random IDs under a workspace prefix, never identifying filename
 Storage policies verify database access; a prefix alone is not authorization.
 Membership revocation blocks new downloads; already issued signed URLs can remain
 valid until expiry. Keep lifetimes short and document that residual risk.
+
+Uploaded object versions are immutable after finalization. Clients cannot overwrite
+or promote an accepted version. Finalization binds the exact server-verified bytes
+and digest to a version; scan, preview and extraction all refer to that version.
+Replacement creates a fresh quarantined version and requires a new scan. Test
+overwrite attempts and changes between upload, scan and promotion; never trust a
+client-supplied content hash or an editable accepted flag.
 
 Use UUID identifiers, timestamptz for instants and `date` for date-only obligations.
 Store an IANA zone plus recurrence definition where local wall time matters. Money

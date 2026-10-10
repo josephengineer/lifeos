@@ -11,7 +11,8 @@ useful when AI is unavailable.
 
 Phase 0 engineering foundation, prepared for founder review. No application,
 database, authentication, AI, billing or deployment exists yet. Local documentation
-checks are available; remote CI and native builds require separate verification.
+checks are available; see the verification record and PR checks for remote CI.
+Native builds and application tests have not run.
 All product features are **Planned**. Architecture decisions are proposals.
 
 ## Start here
