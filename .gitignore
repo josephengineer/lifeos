@@ -1,0 +1,32 @@
+# Secrets and machine-specific configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.mobileprovision
+credentials.json
+
+# Generated application and tooling output
+node_modules/
+.expo/
+dist/
+build/
+coverage/
+test-results/
+playwright-report/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+supabase/.temp/
+supabase/.branches/
+
+# Never use this repository to hold private documents
+private-data/
+local-uploads/
