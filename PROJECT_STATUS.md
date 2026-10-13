@@ -4,7 +4,7 @@ Updated: 2026-10-13. Phase 0 is In Review; Phase 1 is not authorized.
 
 - Branch: `codex/phase-0-foundation`.
 - PR: [#19, open draft targeting main](https://github.com/josephengineer/lifeos/pull/19).
-- Published baseline before this review: `9d69e738232a57dc7ce29ea0eb0cd4ff16857cc2`.
+- Reviewed architecture commit: `d5a5c5a6e6f7a54495d411fa42f7c430ccb3d79e`.
 - Main: empty bootstrap `cdc1d64cbf47c71b3af1573032cddb51f59c43dc`.
 - Repository: private; main protection unavailable on current entitlement.
 
@@ -29,16 +29,21 @@ retention, workers, licensing and billing decisions remain in the decision regis
 
 ## Validation and publication
 
-Previous baseline CI passed; it does not validate this review's local changes.
-Review checks and publication evidence are recorded in
+Reviewed changes were committed and pushed to the existing branch; draft PR #19
+was updated. Both fresh runs on `d5a5c5a` passed:
+[PR run](https://github.com/josephengineer/lifeos/actions/runs/38450517559) and
+[push run](https://github.com/josephengineer/lifeos/actions/runs/38450512405).
+This status-record follow-up must pass its own CI; consult the PR description for
+the final head SHA and live results rather than attributing these runs to it.
+Local foundation/YAML/actionlint/whitespace/mutation and sensitive-content checks
+passed, with zero Gitleaks findings. Full evidence is recorded in
 [verification](docs/engineering/verification.md) and the PR description. Application,
 RLS/session/storage tests and native builds have not run.
 
 ## Next action
 
-Finish authorized Phase 0 validation, preserve reviewed changes in a focused commit,
-push only this foundation branch, update draft PR #19 and verify fresh CI.
-Then stop for founder decisions and explicit approval. Do not merge, change settings,
+Await founder acceptance/amendment of ADRs and governance, then request a separate
+explicit merge instruction after confirming current-head CI. Do not merge, change settings,
 deploy, publish a product or start Phase 1 without separate authorization.
 
 Update this record in future development tasks. Record tested commit IDs and CI

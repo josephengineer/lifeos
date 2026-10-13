@@ -78,8 +78,9 @@ and security behavior cannot be verified before an application exists.
 
 ## Checks, PR status and merge recommendation
 
-The PR remains open and draft. Previous Foundation runs passed; the current head
-must pass after this update. [Verification](verification.md) records prior evidence;
+The PR remains open and draft. Both fresh runs passed on reviewed architecture
+commit `d5a5c5a6e6f7a54495d411fa42f7c430ccb3d79e`. Later evidence-only edits need
+their own CI. [Verification](verification.md) records exact run links;
 the [PR checks](https://github.com/josephengineer/lifeos/pull/19/checks) and PR
 description identify the final tested revision. Earlier runs do not verify later
 changes. Application tests, web/native builds, deployed RLS/storage, session

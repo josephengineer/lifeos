@@ -126,3 +126,22 @@ have run. Sensitive-content review is bounded evidence, not a universal guarante
 Publication requires a staged whitespace check, scan of the new commit and a fresh
 private-repository check before pushing. Exact new SHA and remote CI are recorded
 in the publication follow-up and PR description after execution.
+
+### Review publication evidence
+
+Published review commit `d5a5c5a6e6f7a54495d411fa42f7c430ccb3d79e` to the existing
+foundation branch without force push. Staged and committed whitespace checks
+passed; a refreshed working-tree scan and branch history scan including the new
+commit returned zero findings. Privacy was rechecked immediately before push.
+Updated draft PR #19 with all six findings, six proposed ADRs, 187-capability
+summary, all 21 work issues and explicit executed/unrun checks.
+
+GitHub reports both runs completed successfully for that exact review SHA:
+
+- [Pull-request run 38450517559](https://github.com/josephengineer/lifeos/actions/runs/38450517559).
+- [Push run 38450512405](https://github.com/josephengineer/lifeos/actions/runs/38450512405).
+
+This evidence/status follow-up is a later documentation commit and requires its
+own CI. The PR description records its final SHA and results after verification;
+the runs above are not claimed to validate later edits. Main remains the empty
+bootstrap, the PR remains draft/unmerged and no repository setting was changed.
