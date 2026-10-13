@@ -23,6 +23,10 @@ exact recommended configuration. GitHub returned an upgrade requirement for both
 private branch protection and rulesets; main is currently unprotected. No settings
 were changed and the repository must remain private.
 
+The founder now prefers GitHub Pro and this protection configuration. Purchase
+and setting changes still need separate authorization; no manual exception is
+accepted. Follow the exact steps in the governance report after that authorization.
+
 If supported by the founder's chosen plan, require PRs and the observed
 `Foundation checks` status, require an up-to-date branch and resolved conversations,
 and block force pushes and deletion of main. Use **zero required approving reviews**

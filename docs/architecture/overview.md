@@ -6,8 +6,9 @@ One universal Expo/React Native application, Expo Router and strict TypeScript
 form the client. A modular monolith owns business rules. Supabase provides Auth,
 PostgreSQL and private object storage. Privileged operations and AI execute on
 the server. Background workers run independently of client application lifetime.
-The recommended auth gateway is specified in [ADR-0005](../adr/0005-authentication-and-sessions.md).
-API hosting/key management require the Phase 1 spike; worker runtime and package
+The official SDK is the preferred auth candidate in [ADR-0005](../adr/0005-authentication-and-sessions.md);
+security objectives are conditionally approved, implementation architecture is not.
+Auth storage/session checks require the Phase 1 spike; worker runtime and package
 versions remain open implementation decisions, with no provisioning authorized.
 
 ## Proposed repository layout
@@ -43,12 +44,12 @@ the client dependency graph. Tests verify domain rules without devices or servic
 
 ## Data flow and trust boundaries
 
-1. Each Expo client authenticates through the monolith's API/BFF, which uses
-   Supabase Auth and retains provider tokens server-side. Web uses an HttpOnly
-   opaque cookie; native uses an opaque bearer handle stored in SecureStore.
-2. All application data calls go through the BFF. Ordinary server data adapters
-   use user-scoped JWTs and RLS; direct Supabase endpoints must enforce the same
-   active-session and workspace gates even though clients do not normally call them.
+1. Recommended candidate: official Supabase Auth SDK, native protected storage
+   and memory-only web tokens. Browser persistence/XSS tradeoffs and exact timeout
+   policy need founder acceptance; no custom session gateway is approved.
+2. Direct user-scoped Supabase adapters enforce RLS. Custom business APIs verify
+   JWTs and the same active provider-session, account and workspace gates. Complex
+   mutations use reviewed transactional operations, not client-only checks.
 3. Server verifies identity, active membership and resource ownership, validates
    input, then applies a transaction. Never trust a client-supplied workspace ID.
 4. Bounded gateway upload binds a random key, workspace, size/type and one-use
@@ -63,13 +64,13 @@ the client dependency graph. Tests verify domain rules without devices or servic
    Structured suggestions return for human review; no document can authorize tools.
 
 Native session storage, camera capture, push registration and file selection use
-platform adapters. The web cookie/CSRF design and native storage behavior are
-specified in ADR-0005 and must be validated before release.
+platform adapters. ADR-0005 compares SDK and cookie/BFF designs; validate the
+chosen storage and transport before implementation and release.
 
 Session invalidation is a separate authorization requirement from JWT signature
 validation. Supabase sign-out does not instantly invalidate every issued access
-token. ADR-0005 recommends authoritative LifeOS session state checked at the BFF,
-RLS and storage boundaries. D15 asks the founder to accept that design; tests and
+token. ADR-0005 recommends authoritative provider-session/account checks at API,
+RLS and storage boundaries without a duplicate issuer. D15 remains conditional; tests and
 implementation remain Phase 1/2 work. No positive authorization cache or claim
 that client-side logout alone revokes a JWT is permitted.
 

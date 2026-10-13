@@ -3,17 +3,17 @@
 Status: Proposed interface contracts; no endpoints are implemented.
 
 Use versioned JSON contracts for custom server APIs, validated with Zod on entry
-and for untrusted provider responses. All Expo clients use the monolith API/BFF;
-server user-scoped data adapters remain subject to RLS. Use cookie+CSRF for web
-and an opaque SecureStore bearer handle for native, never browser/mobile Supabase
-refresh tokens. See [ADR-0005](../adr/0005-authentication-and-sessions.md).
+and for untrusted provider responses. Prefer official SDK authentication and direct
+user-scoped data adapters with RLS, plus custom business APIs where needed.
+Custom APIs verify provider JWT bearer credentials and authoritative session,
+account and membership state. No custom session transport is approved; see
+[ADR-0005](../adr/0005-authentication-and-sessions.md).
 
 | Proposed operation | Authorization and behavior |
 | --- | --- |
-| POST /v1/auth/register, /login, /recover | BFF calls Supabase Auth; bounded/rate-limited, non-enumerating, web login CSRF protection |
-| POST /v1/auth/callback, /reauthenticate | Bound single-use callback or fresh credentials; rotate opaque handle |
-| POST /v1/auth/logout, /logout-all | Commit app revocation before provider cleanup; all-device path requires fresh reauth |
-| GET /v1/auth/session | Safe session state only; no provider tokens; expired/revoked session denied |
+| Provider SDK register/login/recover/callback | Use supported Supabase flows, rate limits and callback binding; not custom LifeOS endpoints |
+| Provider SDK logout/local or global | Explicit scope, confirmed provider outcome, local cache cleanup; global path requires reviewed fresh-auth flow |
+| Sensitive-action reauthentication | Provider-supported fresh credential proof, action binding; contract pending ADR-0005 gates |
 | GET /v1/me | Current identity only; profile and accessible personal workspace |
 | PATCH /v1/me/preferences | Allowlisted fields, locale=en, validated time zone |
 | POST /v1/workspaces/:id/upload-intents | Active membership, quota/type/size bounds, one-use gateway intake ID, no storage bearer URL |

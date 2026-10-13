@@ -4,6 +4,10 @@ ADRs are proposals until the founder accepts them. Record date, context,
 alternatives, decision, consequences, evidence and approval. Supersede rather
 than silently rewriting accepted decisions.
 
+Founder decisions recorded 2026-10-13: ADR-0005 security objectives conditionally
+approved, final implementation architecture pending; ADR-0006 principles approved
+with pre-implementation design/threat/test gates. ADRs 0001-0004 remain Proposed.
+
 - [0001: Modular monolith and universal client](0001-modular-monolith.md)
 - [0002: Workspace isolation and private storage](0002-isolation.md)
 - [0003: AI suggestions and approved actions](0003-ai-and-actions.md)

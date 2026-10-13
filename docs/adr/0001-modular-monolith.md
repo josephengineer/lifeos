@@ -7,8 +7,9 @@ business logic. The initial product has closely related personal administration 
 
 Decision proposal: Expo/React Native/Router with strict TypeScript, modular domain
 packages, typed Zod boundaries and Supabase-backed persistence. Use a single
-repository and npm workspace lockfile once an app exists. ADR-0005 adds an API/BFF
-inside the same monolith; select its hosting/key management in the Phase 1 spike.
+repository and npm workspace lockfile once an app exists. ADR-0005 recommends
+evaluating the official SDK first; a custom auth gateway is not approved.
+Custom business APIs remain part of the monolith; validate hosting as needed.
 Select worker hosting separately before document processing. This remains one
 universal Expo frontend, not a separate web application architecture.
 

@@ -2,6 +2,10 @@
 
 Date: 2026-10-10. Scope: Phase 0 only. Product features remain Planned.
 
+This is a chronological evidence record. Earlier BFF recommendations and all-ADRs-
+Proposed statements describe their review revision; the founder-decision follow-up
+below and current ADRs supersede those proposals, not the historical test results.
+
 ## Environment inspection
 
 - Working directory initially contained only `.git`; no application or existing commits.
@@ -145,3 +149,32 @@ This evidence/status follow-up is a later documentation commit and requires its
 own CI. The PR description records its final SHA and results after verification;
 the runs above are not claimed to validate later edits. Main remains the empty
 bootstrap, the PR remains draft/unmerged and no repository setting was changed.
+
+## Founder-decision follow-up: 2026-10-13
+
+Recorded ADR-0005 conditional approval of security objectives only and ADR-0006
+principle approval with component design/threat/test gates. Compared official
+SDK/native/web/SSR guidance with web-only and universal BFF alternatives. Recommend
+official SDK research first; browser persistence/XSS, exact timeouts and direct
+provider account-operation controls remain unresolved implementation decisions.
+No opaque issuer or refresh-token vault is assumed. No runtime spike was executed.
+
+Synchronized architecture/API/data/security/setup/roadmap/backlog references and
+all 20 existing Phase 1 issue titles/body sections; each remains open and Planned.
+P1-18 is now Research. Added the final Phase 0 approval checklist and exact Pro/main
+protection steps. Founder preference does not authorize purchase or settings changes.
+
+Executed before publication: foundation validator and working diff whitespace
+checks passed; all three YAML files parsed with unique-key/trigger/permission
+assertions; actionlint 1.7.12 passed; catalog remained 187 Planned capabilities in
+15 modules. Isolated missing-status/broken-link/invalid-status mutation probes
+passed. Sensitive inventory covered 57 text files with no personal-path/email,
+binary/customer attachment or credential filename findings. Gitleaks 8.30.1 scanned
+the reviewed-tree snapshot with zero findings. Staged/committed checks and exact
+new-head CI publication results are recorded in the PR description after execution.
+
+Read-only GitHub inspection still returned private=true, main protected=false,
+and HTTP 403 upgrade requirements for protection/rulesets. PR #19 remained draft
+and unmerged at baseline 54a1b56. New documentation commits must pass fresh CI;
+old runs do not validate them. No settings, subscriptions, deployment or Phase 1
+implementation changed. No application/native/RLS/storage/auth tests have run.

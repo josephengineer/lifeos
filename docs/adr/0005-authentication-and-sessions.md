@@ -1,213 +1,177 @@
-# ADR-0005: Supabase Auth with server-managed application sessions
+# ADR-0005: Supabase authentication and session architecture comparison
 
-Date: 2026-10-10. Status: Proposed, decision-ready; founder approval pending.
-Resolves the design proposal for D15; complements ADR-0001/0002. Nothing here
-is implemented or security-verified. Accepting this ADR does not start Phase 1.
+Updated: 2026-10-13. Status: **Conditionally approved security objectives;
+implementation architecture not approved.**
 
-## Context and recommendation
+Founder decision: compare the custom gateway with official Supabase approaches
+and choose the simplest design meeting LifeOS requirements. A custom session
+system needs concrete evidence of necessity. This revision replaces the earlier
+all-platform BFF recommendation, preserved in Git history. No Phase 1 work,
+hosting purchase or implementation is authorized.
 
-LifeOS handles private documents on web, Android and iOS. Issued JWTs are not
-inherently revoked by clearing a client session. A common authorization boundary
-is preferable to three subtly different revocation policies.
+## Recommendation and approved objectives
 
-Recommend a backend-for-frontend (BFF), implemented as the API module of the
-existing modular monolith. All three Expo clients authenticate and access private
-data through it. Supabase Auth remains the identity/password/verification provider.
-Supabase access and refresh tokens stay encrypted on the server. Clients receive
-only opaque, revocable LifeOS session credentials. This is not a new frontend,
-microservice fleet or replacement identity provider. No custom password database.
+Recommend evaluating official `supabase-js` on all Expo targets, with platform
+storage adapters and server-enforced authorization. Supabase owns identity,
+session issuance and refresh. Use its session identifier in a narrow authorization
+check; do not add opaque LifeOS credentials, a duplicate issuer, a provider-token
+vault or a distributed refresh service without evidence of need.
 
-Web can remain an Expo static export with same-origin `/api` routing to the BFF;
-SSR is not required. Native clients use that API over TLS through platform adapters.
-Select hosting, key management and request/upload limits in the Phase 1 spike
-before committing to a provider or paid resource (D16).
+Preserve the approved objectives: credential protection, tenant isolation,
+server-side revocation, honest offline behavior and verified deletion. Keeping
+every provider token off clients was an earlier design choice, not an accepted
+product requirement. JavaScript-visible web tokens and persistence UX need an
+explicit founder decision before auth implementation. If unacceptable, evaluate
+a web-only BFF before imposing one on native.
 
-## Alternatives
+A bounded file-intake/preview service can still be needed for safe immutable
+uploads. It can accept provider JWTs without issuing sessions or proxying every
+database request. The universal Expo frontend and modular monolith remain.
 
-| Option | Advantages | Tradeoffs / reason not recommended |
-| --- | --- | --- |
-| Browser/native Supabase SDK with direct JWT access | Fewest server components; native SDK refresh support | Browser JS can access persistent credentials; direct API/storage revocation must be enforced everywhere; more token transport variants |
-| Web BFF; native Supabase tokens in SecureStore | HttpOnly browser protection; familiar native SDK | Two refresh/revocation protocols and larger negative-test matrix |
-| BFF and opaque sessions on all platforms (recommended) | One session gate, no Supabase refresh tokens on devices, server-controlled revocation | Additional latency, session database/key-management work, server availability dependency and a concentrated credential target |
+## Official baseline versus LifeOS additions
 
-A conventional Supabase SSR client with browser-readable cookies is not equivalent
-to this BFF. The BFF must own the token exchange/refresh path; do not merely add
-HttpOnly to cookies that the browser SDK expects to refresh.
+Official native examples use the SDK's configurable storage and foreground
+refresh lifecycle. Quickstart AsyncStorage/SQLite persistence is not LifeOS's
+production storage policy. Native needs protected storage. Static Expo web can
+use the same SDK without SSR. If SSR becomes necessary, `@supabase/ssr` shares
+tokens between browser and server; it is not a server-only HttpOnly token vault.
 
-## Platform storage and transport
+SDK login does not replace RLS, current membership, account lifecycle checks,
+safe previews or negative tests. A valid JWT proves identity, not authorization
+or current session state. A provider-session check can detect sign-out without
+building another credential lifecycle.
 
-| Platform | Stored credential | Required handling |
-| --- | --- | --- |
-| Web | Opaque `__Host-lifeos_session` cookie | Secure, HttpOnly, SameSite=Lax, Path=/, no Domain; no session tokens in localStorage/sessionStorage/IndexedDB; TLS outside explicitly isolated local development |
-| Android | Opaque LifeOS bearer credential in Expo SecureStore | Platform-protected storage, backup exclusion, no AsyncStorage or logs; memory-only copy while sending API calls |
-| iOS | Opaque LifeOS bearer credential in Expo SecureStore | Keychain with WHEN_UNLOCKED_THIS_DEVICE_ONLY where supported; no cloud migration of session; clear surviving credentials on detected fresh install |
-| Server | Encrypted Supabase access/refresh pair | Restricted secret table, encryption key outside DB, versioned key rotation, no tokens in logs/backups in plaintext; only session service decrypts |
+## Comparison
 
-Native secure storage failure means reauthentication, never fallback to plaintext.
-Reinstall behavior and backup exclusions require device tests; secure storage does
-not protect a fully compromised device. No mandatory biometric binding initially;
-optional local app locking is a separate future decision. The session handle is
-a bearer secret even though it is opaque. Do not place it in deep links or URLs.
+| Concern | Official SDK on native/web: recommended candidate | Web BFF plus native SDK | Custom opaque sessions everywhere: earlier proposal |
+| --- | --- | --- | --- |
+| Security/storage | Native protected provider tokens; browser JS reads runtime tokens; memory-only avoids persistent web tokens, not XSS | HttpOnly web cookie reduces token extraction; native retains provider tokens; web CSRF controls needed | Server-held provider tokens, but opaque client secrets remain stealable; concentrated vault target |
+| Logout/revocation | Provider sign-out plus live session/account gates at data boundaries; SDK refresh | Same gates plus web-session lifecycle | Registry, epochs, refresh locking and provider cleanup must agree |
+| Server authorization | Verified JWT, authoritative membership/account/session state, RLS/private storage | Same plus cookie/bearer separation | Same; gateway alone does not protect direct provider endpoints |
+| Complexity | Lowest: SDK adapters, small authorization helper and business APIs | Medium: two transports and web session operations | Highest: issuer, token vault, locks, rotation, expiry, cleanup and recovery |
+| Hosting/maintenance | Existing Supabase/business hosting; no mandatory auth proxy; storage-adapter and RLS maintenance | Extra web proxy/vault hosting and observability | Every target depends on gateway, vault/key services; potential extra file bandwidth/compute |
+| Performance/availability | Direct data path; session checks add DB work; Auth needed for login/refresh; fail closed if authorization state unavailable | Web adds hop/dependency, native direct | Extra hop and gateway/session-store dependency for all platforms |
+| Key management/recovery | Provider signing keys plus server admin-key and native-key custody; no additional refresh-token vault | Adds web vault key rotation/restore | Adds vault recovery, restored-session invalidation and crash-safe refresh coordination everywhere |
 
-Generate 256-bit random handles and store only their cryptographic digest in the
-session index. Rotate on login, reauthentication and privilege/security events.
-Invalidate the old handle atomically. Browser cookies are sent automatically, so
-unsafe methods (including login/logout) require Origin checks and a session-bound
-CSRF token; protect pre-login flows with a separate short-lived challenge. SameSite
-and CORS are supplemental, not authorization. Native bearer routes do not accept
-cookie authentication; reject requests supplying conflicting credential modes.
+No reliable monetary estimate exists before region, usage, file limits and hosting
+selection. Supabase's built-in timebox/inactivity controls require Pro or above;
+that is independent of GitHub Pro. No paid Supabase plan is approved. Benchmark
+latency, availability and cost in authorized research.
 
-Use restrictive CSP and no sensitive response caching (`Cache-Control: no-store`).
-Avoid third-party scripts on authenticated web surfaces. HttpOnly reduces token
-exfiltration but cannot stop XSS from acting through the victim's browser.
+## Proposed platform storage
 
-## Sign-in, registration and recovery
+- Android: reviewed SDK storage adapter backed by Expo SecureStore; exclude
+  credentials from backups. No plaintext AsyncStorage/SQLite token fallback.
+- iOS: protected Keychain storage, device-only/unlocked where supported. Test
+  reinstall persistence and fresh-install cleanup. Test realistic maximum session
+  sizes and atomic updates. If secure-store limits require encrypted secondary
+  storage, review a maintained adapter rather than invent encryption or assume
+  tutorial code is production-ready. Secure-storage failures require login.
+- Web: recommend `persistSession: false` and memory-only access/refresh tokens
+  initially. Full reload/new tab requires sign-in; losing local tokens does not
+  confirm server logout. Founder must accept this UX and active-XSS exposure.
+  PKCE redirects may need a bounded single-use verifier/state store, which must
+  not persist access/refresh tokens. Validate callbacks across reloads/devices.
+  Persistent browser storage requires a separate risk decision.
+- Server: verified user JWTs and user-scoped data adapters for ordinary operations;
+  admin/service keys only in approved secret stores. No new refresh-token vault.
 
-The BFF validates/rate-limits English-localized forms and calls Supabase Auth over
-TLS with a per-request client. Never log passwords, callback codes or session data.
-Only a verified identity can activate an ordinary LifeOS session. Create its
-personal workspace through idempotent provisioning before returning private data.
-Rate limits cover credential stuffing, signup, resend and reset; errors do not
-enumerate accounts.
+TLS, no-store private responses, restrictive CSP, dependency review, no raw active
+document content and no token/request-body logging are required. Avoid third-party
+scripts on authenticated surfaces. Memory-only tokens remain accessible to active
+XSS; HttpOnly reduces extraction but does not prevent acting through a browser.
+Bearer APIs must not silently accept ambient cookies. Any future cookie transport
+needs Origin/CSRF protection including login, and separate review.
 
-Use PKCE/state-bound, exact-allowlisted callbacks where a code-exchange flow is
-supported. Verification/reset callbacks are short-lived and single-use. Recovery
-authorization is restricted to password reset, not general data access. On success,
-invalidate existing application sessions and require a fresh login. A native
-callback transfers a one-use, short-lived completion code bound to the initiating
-challenge, not tokens; prefer verified universal/app links. No arbitrary redirects.
-Validate the exact Supabase exchange APIs in the Phase 1 spike. Social providers
-remain cataloged for later scope and must not silently link accounts by email.
+## Authorization and lifecycle
 
-## Proposed lifecycle policy (part of the approval request)
-
-| Event / bound | Proposed behavior |
+| Event/boundary | Required behavior and gate |
 | --- | --- |
-| Access-token expiry | Configure Supabase JWT lifetime to 10 minutes after validating platform/provider support; signature, issuer, audience, expiry, subject and session_id are checked |
-| Refresh | BFF refreshes shortly before expiry, with one distributed refresh operation per Supabase session; atomically persist the rotated pair using version checks |
-| LifeOS idle / absolute expiry | 7 days without foreground user activity / 30 days since sign-in; enforce in DB on every access, not only cleanup jobs; background refresh/jobs do not extend them |
-| Sensitive reauthentication | Verified credentials within 5 minutes for export, deletion, global logout, ownership transfer and connecting sensitive services; rotate handle and bind action to current session |
-| Current-device logout | Commit revocation first, then revoke the corresponding provider session/refresh capability and clear client storage/caches; repeated logout is safe |
-| All-device logout / compromised account | Increment account auth_version, revoke all app sessions, invalidate provider refresh sessions and cancel unapproved external execution |
-| Refresh failure | Invalid/reused refresh credentials close the session; transient provider failure returns a recoverable unavailable state without treating the user as authorized indefinitely |
-| Account deletion | Reauthenticate, atomically mark deletion_pending and bump auth_version, deny data/refresh, queue provider revocation and cleanup; never report completed deletion before verification |
+| Identity | Verify signature, issuer, audience, expiry and subject; never trust payload user IDs or unverified session objects |
+| Private operation | Active account, verified identity, current workspace membership/action permissions; equivalent default-deny RLS and storage gates on direct SDK paths |
+| Provider revocation | Narrow fixed-search-path helper derives auth.uid() and JWT session_id, checks matching provider session/user, denies missing state; no client access to auth tables or arbitrary identity parameters |
+| Current logout | Explicit SDK signOut with scope=local; only report server sign-out after provider acknowledgement; clear local credentials/private caches/history |
+| All-device logout | Explicit global scope after fresh reauthentication; test concurrent login/refresh and affected-session boundary; never rely on the SDK's default global scope |
+| Refresh | SDK-managed refresh and native foreground lifecycle; test concurrent calls, resume, network loss and revoked refresh tokens |
+| Offline logout | Erase local credentials/caches; English notice that server revocation was not confirmed; fresh login may request global logout; selected-device UI stays Phase 4 |
+| Recovery | Rate limits, non-enumerating English errors, allowlisted single-use callbacks; prove recovery credentials cannot bypass intended authorization; revoke affected sessions after reset and require login |
+| Sensitive actions | Fresh verified credential challenge, proposed five-minute freshness and action binding; a refreshed JWT is not reauthentication; provider-supported flow must be reviewed |
+| Deletion | Phase 4 request atomically marks server-owned deletion_pending before async provider/data cleanup; data boundaries/jobs deny inactive accounts despite valid JWTs; verify cleanup before claiming completion |
 
-Refresh locks plus compare-and-swap must prevent a response racing with revocation
-from reactivating a session. Check account status, auth_version and revoked_at
-again before persisting refreshed credentials. Time comes from the server/DB.
-Do not rely on provider paid-plan session timeout features for these LifeOS bounds.
-The values above are proposed security/product defaults, not existing settings.
+The proposed account guard stores lifecycle state, not tokens. Missing state
+fails closed and clients cannot change it. Narrow server operations may coordinate
+deletion and provider administration; privileged keys bypass RLS and must not be
+default CRUD credentials. Do not mutate provider-owned auth schemas/session rows
+or grant clients direct access. Review helper ownership, schema dependencies,
+recursion, query plans and provider upgrades. Direct SDK login is expected, not a
+bypass: only verified active identities with valid session/membership get data.
 
-Offline logout immediately clears local credentials and cached private UI, but
-cannot guarantee server revocation. Show an English notice that server sign-out
-could not be confirmed; a fresh authenticated session can request all-device logout.
-Selected-device management UI remains Phase 4; do not promise it at Phase 1 launch.
-Do not retain a supposedly erased bearer token just to retry it.
-If the server committed revocation but provider cleanup failed, LifeOS access is
-denied and provider cleanup retries; distinguish that from an unreachable server.
+RLS does not govern Supabase Auth's own account-management endpoints. The spike
+must test direct password/email change and global-signout calls, not only LifeOS
+screens. Require provider-supported reauthentication/security settings for the
+chosen sensitive-account policy. If an exposed provider endpoint bypasses a hard
+LifeOS requirement, record it as a concrete gap for an alternative design; do not
+claim a client confirmation or database helper fixes that boundary.
 
-## Session data and authorization
+Durable reminders reauthorize account, membership, task and consent independently
+of interactive sessions. Logout alone does not cancel legitimate reminders;
+deletion, lost membership and revoked integration consent stop dependent jobs.
 
-Proposed account-scoped tables (not migrations):
+## Expiry and revocation limitations
 
-- `account_security(user_id, status, auth_version)`; server-owned lifecycle fields.
-- `app_sessions(id, user_id, handle_digest, supabase_session_id, auth_version,
-  created_at, last_user_activity_at, idle_expires_at, absolute_expires_at,
-  revoked_at, reauthenticated_at, platform, credential_version)`.
-- `session_credentials(session_id, encrypted_provider_tokens, key_version,
-  refresh_version)`; private schema, unavailable to browser/native/database roles.
+Provider sign-out invalidates refresh capability while issued JWTs may remain
+cryptographically valid. Supabase documents checking session_id against its session
+table to detect sign-out. JWT signature/expiry verification alone does not do this.
+Custom APIs, direct REST/RPC and Phase 2 storage must prove parity. Realtime remains
+deferred. Fail closed when authoritative state cannot be checked.
 
-For every request the BFF checks the handle, authoritative account/session state,
-expiry, current workspace membership and per-action resource permissions (or a
-narrow read-only document grant once ADR-0006 sharing is implemented). No
-positive authorization cache initially. Reject absent/deleted/revoked state;
-database/session-store outage fails closed for private operations.
+The earlier 10-minute JWT / 7-day human-idle / 30-day absolute / 5-minute fresh-auth
+bounds were proposals, not approved settings. Provider inactivity measures refresh,
+not human activity; timeouts are applied at refresh and session-row existence alone
+does not enforce exact deadlines. Do not claim equivalence with strict human-idle
+limits. Founder must choose semantics and bounds before implementation. Prefer
+provider controls if their documented residual access-token window is acceptable.
+If strict next-request deadline enforcement is required, evaluate minimal
+server-owned deadline/activity metadata alongside provider sessions first. This
+extension needs approval but does not inherently need a token vault or new issuer.
 
-Use user-scoped Supabase JWTs for ordinary database work so RLS still applies.
-RLS and storage policies must also require the mapped active app session matching
-`auth.uid()` and the JWT `session_id`, account auth_version, and resource membership
-or an explicitly supported read-only grant. A grant cannot authorize workspace lists.
-A narrowly granted fixed-search-path helper can evaluate private session state
-without exposing credential records. It must derive identity from verified claims,
-not arbitrary client-supplied user/session parameters; review and benchmark it.
-It also checks provider session existence for sign-out invalidation; application
-expiry checks remain independent. Expiry cleanup is not the enforcement mechanism.
+Initial file access remains authenticated and reauthorized, with no reusable
+signed bearer URLs. A file gateway can accept provider JWTs. Sealed intake and safe
+preview are Phase 2 gates independent of auth transport. Already authorized
+transactions, streams and delivered bytes cannot be recalled. Sensitive mutation
+ordering versus revocation needs an explicit transactional rule and honest boundary.
 
-Clients cannot create registry entries, mutate membership/owner/state fields, or
-use provider credentials directly through LifeOS endpoints. A direct Supabase login
-that has no registered active app session must fail data/storage access. Restrict
-table writes; invariant-bearing mutations use reviewed transactional functions.
-Test direct REST, RPC, storage and any enabled realtime path, not just the BFF.
-Realtime private feeds are deferred; no implicit open subscription permissions.
+## Implementation gates and trigger for a custom gateway
 
-Service credentials bypass RLS: use separate narrowly reviewed administrative/job
-adapters, never as the default CRUD client. Durable reminders are authorized by
-the active account, workspace, task and consent, independently of the interactive
-session that created them; ordinary logout must not cancel legitimate reminders.
-Deletion, lost membership or revoked integration consent must stop dependent jobs.
+After separate Phase 1 research authorization, P1-01/P1-18 must produce:
 
-## Revocation limits and file access
+1. Pinned SDK/Expo compatibility; native storage size/atomicity, backup/reinstall
+   evidence; web refresh/reload, callback and multi-tab behavior.
+2. Issued-JWT replay denial after local/global sign-out, reset and deletion_pending,
+   with refresh races and outages across custom/direct REST/RPC. Add storage in
+   Phase 2. Test two tenants, invalid claims and absent authorization state.
+3. Founder acceptance of web token exposure/persistence and exact timeout semantics;
+   evidence for restricted recovery and fresh-auth flows without bypass.
+4. Key rotation/restore procedures: fail closed during recovery; invalidate restored
+   sessions or force reauthentication through a supported mechanism before traffic
+   resumes; reapply deletion/revocation records. Native key loss requires login.
+   Benchmark helper latency and document provider/hosting plan costs.
+5. A concrete failed requirement, reproducible evidence, simpler alternatives and
+   renewed founder approval before implementing any custom session system.
 
-Supabase sign-out can leave an issued JWT cryptographically valid until expiry.
-LifeOS therefore denies new authorization checks against revoked session state;
-it does not claim to revoke the JWT signature itself. Without the matching RLS/
-storage gates, a direct endpoint could still accept it. Prove parity before release.
+No runtime experiments have run in Phase 0. Source review supports the simpler
+candidate but does not demonstrate production safety. Persistent HttpOnly web
+sessions, if required, justify evaluating a web-only BFF. An all-platform gateway
+needs an additional demonstrated cross-platform requirement.
 
-Initial downloads/previews/exports are streamed through the authenticated gateway;
-no public bucket or reusable signed download URL is issued. Uploads likewise use
-bounded gateway intake into quarantine. Any later direct-upload/download capability
-needs a separate reviewed expiry/revocation design. This costs bandwidth and may
-constrain hosting; validate limits rather than silently introducing public URLs.
+## Official sources reviewed 2026-10-13
 
-Requests already authorized, transactions in flight, downloaded copies and bytes
-already delivered cannot be recalled. Recheck before sensitive mutation commit
-under a shared account/session lock and before external execution; cancel active
-streams best-effort. State the authorization-time boundary honestly. Operators,
-compromised servers/devices and privileged credentials remain residual risks.
+- [React Native Auth quickstart](https://supabase.com/docs/guides/auth/quickstarts/react-native): configurable SDK storage and foreground refresh.
+- [Expo quickstart](https://supabase.com/docs/guides/getting-started/quickstarts/expo-react-native) and [Expo integration guide](https://docs.expo.dev/guides/using-supabase/): supported baseline, not production storage assurance.
+- [Expo SecureStore](https://docs.expo.dev/versions/latest/sdk/securestore/): platform backup, reinstall and storage constraints.
+- [SSR advanced guide](https://supabase.com/docs/guides/auth/server-side/advanced-guide): shared browser/server tokens, distinct from a server-only HttpOnly BFF.
+- [Supabase sessions](https://supabase.com/docs/guides/auth/sessions): provider session checks and paid timeout/enforcement limits.
+- [Sign-out API](https://supabase.com/docs/reference/javascript/auth-signout): explicit scopes and issued-JWT limitations.
 
-## Mandatory Phase 1 tests and gates
-
-Test all platforms' login/verify/reset, refresh races, revoked/expired/forged handles,
-JWT replay after app/provider revocation, direct Supabase login without registry,
-cross-tenant access, CSRF/login-CSRF, callback replay/redirects, logout cache clearing,
-offline logout messaging, secure-store reinstall/backup behavior and store outage.
-Deletion_pending denies existing sessions immediately at the next check. Prove
-all-device auth_version revocation, no privilege-field writes and no secrets in
-client bundles/logs. Phase 2 adds the storage/stream equivalents before file intake.
-No auth/RLS/device tests have been executed yet; they require approved Phase 1 work.
-
-## Evidence and decision
-
-Official sources initially checked 2026-10-10; Supabase sessions/sign-out and Expo
-SecureStore rechecked 2026-10-13: [Supabase sessions](https://supabase.com/docs/guides/auth/sessions),
-[SSR considerations](https://supabase.com/docs/guides/auth/server-side/advanced-guide),
-[Expo SecureStore](https://docs.expo.dev/versions/latest/sdk/securestore/),
-[OWASP sessions](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
-and [CSRF prevention](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html).
-The BFF/registry, timeout choices and test gates are LifeOS design recommendations,
-not guarantees supplied by those providers. Founder decision: accept, amend or
-reject this proposal including its additional Phase 1 server work and D16 spike.
-
-## Operational costs and unresolved implementation decisions
-
-The BFF adds a network hop and authoritative session reads; RLS adds indexed
-lookups. Streaming can incur storage egress plus gateway bandwidth/compute, and
-needs bounded concurrency, sizes and timeouts. Ten-minute JWTs increase refresh
-traffic compared with the provider's usual one-hour default. Costs cannot be
-priced before hosting, usage and quotas are selected. Benchmark synthetic workloads
-in approved Phase 1/2 work.
-
-P1-01/D16 must select runtime/region, routing, key custody/rotation and recovery,
-and supported SDK/callback APIs. P1-19/20 must specify refresh locking/crash
-recovery, one-to-one provider-session mapping, explicit current-session provider
-sign-out scope, cleanup retry limits and account/session lock ordering.
-Reauthentication must prove a fresh credential check, not accept a refreshed JWT;
-define cleanup of any extra provider session created by that check. Only the auth
-service updates last activity: polling, refresh and direct RLS requests must not
-extend idle expiry.
-
-Validate verification/recovery links opened on another device: offer a safe
-restart without weakening challenge binding. Define key-loss and database-restore
-procedures that invalidate restored sessions before accepting traffic; restored
-revoked credentials must not revive access. These are implementation gates, not
-solved infrastructure.
+Storage choices, the authorization helper and implementation gates are LifeOS
+recommendations derived from these sources, not guarantees supplied by providers.

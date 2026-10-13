@@ -7,7 +7,7 @@ review before public release. No real user data has been processed by this proje
 | Data class | Purpose and access | Retention/deletion proposal |
 | --- | --- | --- |
 | Identity/profile | Account operation; account holder and constrained services | Active account; erase or minimize through verified deletion |
-| Application sessions/provider credentials | Auth gateway only; hashed handles and encrypted server-held tokens | Revoke on logout/expiry; erase credentials after provider cleanup; minimal audit retention separately approved |
+| Provider sessions/client credentials | Official SDK candidate; protected native storage, memory-only web proposed; server account/session authorization | Provider revocation and local erasure; timeout/persistence semantics pending; no new server token vault selected |
 | Documents/metadata | User storage and administrative records; workspace-scoped | User-controlled active/trash lifecycle; trash window pending approval |
 | OCR/extractions/vectors | Optional search/AI assistance; scoped workers | Delete/invalidate with source and applicable AI preference changes |
 | Tasks/reminders/device tokens | Scheduling and delivery | User lifecycle; expire invalid device tokens and obsolete deliveries |
@@ -45,7 +45,7 @@ vectors, chats, queues and exports -> delete or segregate legally retained recor
 -> retry failures -> verify manifest -> confirm outcome. Clarify billing cancellation
 and retained receipts before final confirmation. Define any reversal window before
 implementation. Never report success while cleanup is still incomplete.
-The deletion_pending state and account auth_version deny all existing sessions
+The server-owned deletion_pending state denies all existing sessions
 before asynchronous cleanup. Future shared-workspace deletion first resolves sole
 ownership through explicit transfer or separately confirmed workspace deletion;
 never silently delete other members' data. See ADR-0005/0006 for those boundaries.

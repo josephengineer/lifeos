@@ -3,7 +3,8 @@
 Status: Planned. Execute only after founder approval of Phase 1 scope and ADRs.
 Each item is a separate small issue/PR; split again if implementation grows.
 There are 20 proposed work items. IDs are stable: newly scoped P1-18 through
-P1-20 appear before P1-10 in execution order because auth now includes a BFF.
+P1-20 appear before P1-10 as auth design/authorization/lifecycle gates. A custom
+BFF is no longer the assumed implementation; ADR-0005 requires proof of need.
 Order is dependency-aware, not a commitment to parallel implementation or dates.
 All items are P1 High unless stated otherwise. Feature IDs refer to the catalog.
 
@@ -18,9 +19,9 @@ Type: Research. Features: foundation for all Phase 1 features.
 Context: package compatibility and build constraints are unverified.
 Desired behavior/scope: select Expo/React Native/Router/TypeScript, supported
 Node/npm and compatible test tools using current official docs; record versions
-and Windows/macOS/EAS constraints in an ADR update. Validate BFF hosting,
-same-origin routing, session key management and bounded streaming feasibility
-under ADR-0005 / D16. No paid provisioning.
+and Windows/macOS/EAS constraints in an ADR update. Compare official SDK storage,
+provider-session authorization, callback flows and operational limits under
+ADR-0005 / D16. No paid provisioning or custom session implementation.
 Acceptance: exact compatibility evidence and reproducible scaffold command are
 recorded; alternatives and native validation requirements are explicit.
 Dependencies: approved ADR-0001 and D03/D10 decisions as relevant.
@@ -103,7 +104,8 @@ minimal preferences with constraints, RLS and synthetic seeds.
 Acceptance: one personal workspace per owner with exactly one matching owner membership,
 no personal-workspace transfer, account/session table isolation, composite tenant constraints,
 default-deny grants and no client role/owner mutation; clean reset reproducible.
-Dependencies: P1-04 and approved ADR-0002.
+Dependencies: P1-04, approved ADR-0002 and finalized ADR-0006 personal-ownership
+design/threat/test gate; principle approval alone does not settle the schema.
 Tests: migration reset/upgrade; anonymous, owner and second-user read/write matrix.
 Security/privacy: local database only; no security-sensitive hosted permission changes.
 
@@ -118,64 +120,66 @@ leave no partial tenant data; identities cannot choose another owner.
 Dependencies: P1-08. Tests: retry, rollback, concurrent signup and spoofed-owner cases.
 Security/privacy: audit only reference IDs and outcome codes.
 
-## P1-18: Establish the monolith auth gateway transport
+## P1-18: Validate official Supabase Auth against LifeOS requirements
 
-Type: Feature. Features: ID-001, ID-002, ID-003 infrastructure.
-Context: ADR-0005 moves credential transport behind a server-side gateway.
-Desired behavior/scope: same-origin web API routing and TLS-native API contracts,
-web cookie/CSRF protections, bounded request validation, no-store responses and
-redacted error handling. Do not add a second frontend or issue pretend sessions.
-Acceptance: web CSRF/login-CSRF and conflicting cookie/bearer modes fail closed;
-no provider secret or token reaches a client response, bundle or log.
-Dependencies: P1-04, P1-08, approved ADR-0005 and D16 hosting decision.
-Tests: transport, origin/CSRF, input limits, log redaction and environment isolation.
-Security/privacy: password/token bodies excluded from logging and error telemetry.
+Type: Research. Features: ID-001, ID-002, ID-003 infrastructure.
+Context: founder conditionally approves security goals, not a custom gateway.
+Desired behavior/scope: bounded synthetic SDK prototype for native protected
+storage, web memory-only sessions, callbacks, provider-session gates and recovery.
+Compare SDK, web-only BFF and all-platform BFF with measured costs/latency limits.
+Acceptance: record evidence and founder decisions on web persistence/XSS, timeout
+semantics and fresh-auth/reset flows. A custom issuer/vault needs a demonstrated
+failed requirement, simpler alternatives and explicit architecture approval.
+Dependencies: P1-01, P1-04, P1-08 and separate Phase 1 research authorization.
+Tests: storage size/reinstall/backup, callbacks/reload, logout/JWT replay, outages,
+tenant denial and restore design; no production provisioning or real data.
+Security/privacy: no passwords/tokens in logs; no architecture accepted by default.
 
-## P1-19: Add session registry and RLS authorization gates
+## P1-19: Add provider-session and RLS authorization gates
 
 Type: Feature. Features: ID-001 and personal workspace access.
-Context: JWT signature validity alone does not prove an active LifeOS session.
-Desired behavior/scope: account_security, app_sessions and isolated encrypted
-credential storage; verified provider-session registration, owner-only metadata,
-and narrowly granted session-state helper for user-scoped RLS.
-Acceptance: unmatched/direct-provider sessions, revoked account versions and
-cross-tenant access are denied; clients cannot write lifecycle/session fields;
-no credential table is exposed. Test owner membership invariants from ADR-0006.
-Dependencies: P1-09, P1-18, accepted ADR-0005/0006.
-Tests: clean migrations, policy matrix, invalid claim/session mapping, private-table
-denial and fail-closed session-store behavior. Storage gates join Phase 2.
-Security/privacy: keep encryption keys outside DB; review helper grants/search_path.
+Context: JWT signature validity alone does not prove an active provider session.
+Desired behavior/scope: server-owned account lifecycle guard and narrow read-only
+provider-session helper shared by RLS/custom APIs; no new token vault or issuer.
+Acceptance: absent/revoked provider sessions, inactive accounts and cross-tenant
+requests denied; no client lifecycle writes/auth-table reads; personal-owner
+invariants enforced. Direct SDK login is allowed only with valid authorization.
+Dependencies: P1-09, P1-18, final ADR-0005 architecture approval and ADR-0006 gates.
+Tests: migrations, two-user policy matrix, forged/session-user mismatch, provider
+sign-out replay, private-table denial and DB outage. Storage gates join Phase 2.
+Security/privacy: review helper grants/search_path, provider schema dependency and
+query cost; service keys must not become ordinary CRUD credentials.
 
 ## P1-20: Implement refresh, revocation and expiry lifecycle
 
 Type: Feature. Features: ID-001, ID-003; core security prerequisite for ID-010 later.
 Context: races must not restore a logged-out session or bypass expiry.
-Desired behavior/scope: serialized provider refresh, compare-and-swap credential
-rotation, current/all-session revocation, auth_version checks, idle/absolute limits
-and restricted password-recovery completion under ADR-0005. Device-management UI
+Desired behavior/scope: official SDK refresh, explicit current/global provider
+sign-out, account gates, agreed expiry semantics and restricted recovery under
+ADR-0005. Do not implement a custom refresh/credential service. Device-management UI
 remains Phase 4; account-deletion workflow remains Phase 4.
 Acceptance: replay of issued JWTs after revocation fails application/RLS gates;
 provider outage yields a recoverable error; in-flight refresh cannot reactivate
-revoked sessions; normal logout does not cancel durable reminders.
+revoked provider sessions; normal logout does not cancel durable reminders.
 Dependencies: P1-19. Tests: concurrent refresh/revoke, expiry boundaries, already-issued
 JWT replay, provider sign-out detection, logout retries and deletion_pending denial.
-Security/privacy: exact proposed timeout policy requires founder acceptance;
+Security/privacy: exact timeout semantics and values require founder acceptance;
 no claim that JWT signatures or already-delivered bytes can be retroactively revoked.
 
 ## P1-10: Implement platform session adapters
 
 Type: Feature. Features: ID-001.
 Context: web and native have different storage/session threats.
-Desired behavior/scope: browser cookie/CSRF client adapter and native SecureStore
-opaque-handle adapter under ADR-0005; no client Supabase tokens. Server refresh
-and revocation are provided by P1-20. Clear private caches and explain offline logout.
+Desired behavior/scope: approved SDK storage adapters, protected native tokens and
+agreed web persistence under ADR-0005; P1-20 supplies lifecycle behavior. Clear
+private caches and explain offline logout. No custom opaque handle system assumed.
 Acceptance: expired/revoked sessions fail safely; background/resume works;
 logout clears local private state; credentials never appear in logs.
 Dependencies: P1-04, P1-07, P1-20, approved ADR-0005 / D15. Tests: expiry/refresh failure, logout and platform
 adapter tests; replay an already-issued JWT after logout/revocation against both
 custom APIs and direct database/storage paths. Record the measured denial boundary.
 Security/privacy: review XSS/CSRF implications and storage limitations explicitly.
-Use the approved server/RLS active-session gate; stopping refresh or clearing
+Use the approved server/RLS provider-session gate; stopping refresh or clearing
 client storage alone is insufficient. Test Keychain reinstall and Android backup behavior.
 
 ## P1-11: Add email registration and verification
@@ -183,8 +187,8 @@ client storage alone is insufficient. Test Keychain reinstall and Android backup
 Type: Feature. Features: ID-001, ID-002.
 Context: new users need a verified identity and recoverable signup.
 Desired behavior/scope: localized forms, verification callback and resend recovery
-through the BFF using development mail capture; connect idempotent provisioning
-and the server-managed session registry. Use English resources for provider templates.
+through the approved Supabase SDK flow using development mail capture; connect
+idempotent provisioning and authorization gates. Use English provider templates.
 Acceptance: verified signup reaches its own workspace; expired/replayed links
 fail safely; generic responses avoid account enumeration.
 Dependencies: P1-05, P1-09, P1-10.

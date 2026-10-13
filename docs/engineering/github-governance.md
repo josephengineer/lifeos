@@ -3,6 +3,9 @@
 Reinspected 2026-10-13 using authenticated, read-only GitHub REST requests.
 No repository settings, subscriptions, permissions or visibility were changed.
 
+Founder decision: **GitHub Pro with protected main is preferred.** Purchase and
+settings changes remain unauthorized. No temporary manual exception was accepted.
+
 ## Observed evidence
 
 | Read | Result |
@@ -75,9 +78,40 @@ force pushes or deletion by an authorized account.
 Recommend enabling a supported private-repository plan before merge, subject to
 the founder's own purchase decision and separate approval of the exact settings.
 Alternatively the founder may explicitly accept the documented manual-governance
-risk for Phase 0 only. Neither alternative is selected or executed by this report.
+risk for Phase 0 only. The founder now prefers Pro; the manual exception is not
+selected. No purchase or configuration has been executed.
 Do not represent unavailable enforcement as configured protection.
 
 Sources checked: [protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
 and [rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets).
 Exact UI labels and plan capabilities must be rechecked when configuration is approved.
+
+## Exact founder setup instructions (not executed)
+
+Purchase is a separate founder action: follow GitHub's
+[personal-plan upgrade instructions](https://docs.github.com/en/billing/how-tos/manage-plan-and-licenses/upgrade-plan),
+open profile **Settings -> Billing & Licensing -> Licensing -> Current plan ->
+Upgrade -> Upgrade to Pro** for the repository-owning personal account, review the
+displayed price/billing cycle and confirm only when ready. Keep LifeOS private.
+This does not purchase Supabase Pro or authorize an agent to change settings.
+
+After Pro is active and settings changes are explicitly authorized, use one classic
+rule as the simplest configuration:
+
+1. Repository **Settings -> Branches -> Add classic branch protection rule**.
+2. Set **Branch name pattern** to exactly `main`.
+3. Enable **Require a pull request before merging**. Leave **Require approvals**
+   unchecked (zero approvals), Code Owners and latest-push approval unchecked.
+4. Enable **Require status checks to pass before merging**, select the existing
+   **Foundation checks** check and require the branch to be up to date.
+5. Enable conversation resolution and **Do not allow bypassing the above settings**.
+6. Leave **Allow force pushes**, **Allow deletions**, and **Lock branch** unchecked.
+   Do not add deployment/merge-queue requirements or overlapping rules.
+7. Review and click **Create** only under the separate settings authorization.
+
+Read back the rule and check PR #19 shows the required check with no missing-review
+requirement. Record enforcement evidence; never test deletion/force push on main.
+Any disposable enforcement-test branch/rule needs its own authorized setup.
+Use squash when a merge is eventually approved; changing repository-wide merge
+options is separate. These steps follow the official
+[classic protection guide](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule).

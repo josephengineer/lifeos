@@ -27,9 +27,10 @@ later phase are not promised at beta.
 
 - Users cannot read or modify another workspace via API, storage, search, jobs
   or guessed identifiers; prove this with negative integration tests.
-- Recommended platform auth design is Supabase Auth behind the monolith BFF with
-  server-managed sessions (ADR-0005); founder acceptance is pending. RLS remains
-  enforced even for direct endpoints. Phase 1 includes the server session baseline.
+- Auth security objectives are conditionally approved; ADR-0005 recommends
+  evaluating the official Supabase SDK first. Final storage/timeout/transport
+  architecture is pending. RLS and server authorization cover every direct endpoint;
+  a custom session system needs demonstrated necessity and renewed approval.
 - Personal workspace ownership is explicit and cannot be reassigned implicitly.
   OCR/AI produce separate derived records and never rewrite original file bytes
   (ADR-0006). Family/business sharing remains Phase 6.

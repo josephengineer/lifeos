@@ -1,7 +1,14 @@
 # ADR-0006: Workspace ownership and immutable document provenance
 
-Date: 2026-10-10. Status: Proposed, decision-ready; founder approval pending.
+Updated: 2026-10-13. Status: **Approved in principle; implementation gates pending.**
 Clarifies ADR-0002 and findings R02/R03. No database or storage implementation exists.
+
+The founder approves explicit ownership, strict tenant isolation, immutable
+originals, separate derivatives/AI metadata, traceable provenance, server-enforced
+authorization and appropriate retention/deletion policies. This is not approval
+of the exact schema, shared-role model, retention periods or auth transport.
+Finalize implementation details, threat model and test specifications before
+implementing each component; execute those tests before claiming it Verified.
 
 ## Recommendation and ownership
 
@@ -62,7 +69,8 @@ collaboration launch; no shared account-deletion policy is claimed as law.
 
 Every uploaded file has an immutable version with a random storage key and
 server-computed digest/byte length. Initial intake is through the authenticated
-gateway from ADR-0005. Untrusted quarantine is never previewed or sent to AI.
+file-intake service; ADR-0005's auth transport remains undecided. This service does
+not require a custom session issuer. Untrusted quarantine is never previewed or sent to AI.
 After upload completes, seal the bytes into a new server-only immutable key,
 verify its digest, then scan that exact sealed version. Do not scan a mutable
 upload key and later assume it still contains the same bytes. Only accepted
@@ -121,8 +129,8 @@ and costs not justified for MVP. Recommend application-enforced immutability wit
 separate originals/derivatives and narrow roles. Privileged infrastructure operators
 can still alter storage; no claim of regulatory WORM or cryptographic proof of truth.
 
-Founder decision: accept this ownership/sharing/provenance model or revise it
-before schema implementation. Later legal terms, role details and sharing UI remain
+Founder principles are accepted; the detailed model still needs review against
+the gates below before schema implementation. Legal terms, role details and sharing UI remain
 gated to their phases. [Database design](../architecture/database.md),
 [privacy](../security/privacy.md) and [ADR-0005](0005-authentication-and-sessions.md)
 define the adjacent boundaries.
@@ -149,3 +157,18 @@ recommend pinned versions with explicitly renewed sharing to avoid exposing futu
 uploads. Specify display derivatives, copy/export rights, editor delete rights,
 owner departure and retention terms. No advanced business ACL or legal retention
 policy is implied by this proposal.
+
+## Conditional implementation gates
+
+| Component / phase | Details and threat-model review required before coding | Required verification before completion |
+| --- | --- | --- |
+| Personal ownership / Phase 1 | Transactional owner/member invariant, idempotent provisioning and recovery; threat: owner spoofing and concurrent creation | Duplicate/concurrent provisioning, mismatched owner, no client owner mutation, cross-tenant FK/RLS denial |
+| Original intake / Phase 2 | Seal/copy protocol, object identity/hash authority, narrow writer privileges and partial-failure recovery; threats: post-scan substitution and privileged-worker writes | Race upload/finalize/scan, client/worker overwrite/promotion denial, hash unchanged before/after OCR and confirmed-field edits |
+| Derivatives/preview / Phase 2 | Source/run FKs, accepted-version gating, safe MIME/sandbox rules and quotas; threats: cross-tenant provenance, active content and stale extraction | Mismatched tenant/run/source, malicious preview, rejected-file exclusion and replaced-source retrieval denial |
+| Retention/deletion / before relevant feature | Founder-approved windows, source/derivative/index/job manifest, provider deletion and restore policy; threats: orphaned sensitive data and resurrection | Verified sweeps, failure/retry, restored-deletion replay and account denial during cleanup |
+| Shared ownership/grants / Phase 6 | Role/delete matrix, version-pinning choice, explicit copy/transfer, last-owner and departure terms; threats: implicit personal exposure and privilege escalation | Full role/grant matrix, expiry/revocation, no source-listing access, transfer races and no implicit shared-data cascade |
+
+No gate is satisfied merely by writing this ADR. Use synthetic fixtures, update
+the threat model with the chosen mechanisms, and link design/test evidence in each
+implementation issue. Unresolved legal/provider retention constraints stay blocked;
+approval in principle is not permission to choose retention periods silently.

@@ -15,8 +15,9 @@ Client code, documents, provider callbacks and model output are untrusted.
 | Threat | Proposed control | Required verification | Residual risk |
 | --- | --- | --- | --- |
 | Cross-tenant reads/writes or guessed IDs | RLS, server checks, composite tenant FKs | Two-user CRUD/storage/search/jobs denial tests | Privileged service paths can bypass RLS |
-| Session theft/account takeover | ADR-0005 BFF, opaque platform handles, server token vault, active-session RLS gates, reauth and rate limits | CSRF, expiry, refresh/revoke races, direct JWT bypass, reset replay and native reinstall | Compromised device/browser/server and in-flight operations remain risks |
+| Session theft/account takeover | ADR-0005 SDK candidate, protected native storage, memory-only web, provider-session/account RLS gates, reauth and rate limits | XSS/storage, expiry, refresh/revoke races, issued-JWT replay, reset replay and native reinstall; CSRF if cookies selected | JS-visible web tokens, compromised devices and in-flight operations remain risks |
 | Privilege escalation | No client membership/role writes, narrow grants | Crafted role/owner/workspace mutation tests | Operator credentials require separate governance |
+| Auth account-operation bypass | Provider-supported reauthentication/settings for password/email/global-session operations; ADR-0005 feasibility gate | Direct provider Auth calls as well as LifeOS UI/API tests; RLS is not the Auth endpoint boundary | Unsupported hard requirements may require another architecture and renewed approval |
 | Public or leaked document access | Private buckets, authenticated gateway streams, ADR-0006 workspace/grant checks | Anonymous and cross-tenant denial, revoked-session/member/grant reads | Previously downloaded bytes cannot be revoked |
 | Malicious PDFs/images, decompression bombs or bytes swapped after scan | Size/type/signature limits, quarantine, immutable finalized versions, scanner, resource-bound parsers | Mismatch, oversized, malformed, scanner-failure and post-scan overwrite fixtures | New parser exploits; scanner is not a guarantee |
 | Prompt injection/data exfiltration | Scope before retrieval, no document authority, tool allowlists | Multilingual malicious files and forged citation tests | Model errors and incomplete detection |
@@ -42,7 +43,9 @@ access to plaintext. Do not describe the system as production-secure or complian
 based on these plans. Data region, scanner, token storage, session strategy and
 incident notification obligations remain open decisions.
 
-ADR-0005/0006 are recommended designs awaiting founder acceptance. A server token
-vault creates a concentrated credential target and the no-cache session gate adds
-availability/latency costs. Benchmark and review secret-table grants, key rotation,
-RLS helpers and worker credentials before implementation is considered Verified.
+ADR-0005 security objectives are conditionally approved; final auth architecture
+is not. ADR-0006 principles are approved, with component design/threat/test gates
+before implementation. Review SDK storage, provider-session helper grants and
+latency, reset authorization, key loss and restored-session invalidation. A custom
+vault would add credential concentration and recovery costs and needs evidence.
+Execute negative tests before describing any component as Verified.

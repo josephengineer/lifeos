@@ -8,11 +8,11 @@ corrected requirement is not an implemented or tested application control.
 | Finding | Severity | Reviewed correction | Current status / remaining risk |
 | --- | --- | --- | --- |
 | R01: document-linked tasks preceded task dependencies | P2 | DOC-019 moved to Phase 3 with DOC-001/TASK-001/TASK-007 prerequisites; catalog/roadmap aligned | Documentation resolved; all capabilities remain Planned |
-| R02: workspace-key rule conflicted with account records | P2 | Separate account records, explicit owner_user_id and matching personal owner membership; workspace-owned documents use created_by attribution | Documentation corrected; ADR-0002/0006 acceptance and actual FK/RLS/ownership tests pending |
-| R03: quarantine allowed an unspecified post-scan replacement path | P1 | Seal bytes before scan, preserve immutable originals, separate derivatives, deny client/worker original writes; add hashes and race/provenance tests | Decision-ready ADR-0006; acceptance and Phase 2 verification pending; privileged operator risk remains |
+| R02: workspace-key rule conflicted with account records | P2 | Separate account records, explicit owner_user_id and matching personal owner membership; workspace-owned documents use created_by attribution | Principles approved under ADR-0006; detailed design gates, ADR-0002 and actual FK/RLS/ownership tests pending |
+| R03: quarantine allowed an unspecified post-scan replacement path | P1 | Seal bytes before scan, preserve immutable originals, separate derivatives, deny client/worker original writes; add hashes and race/provenance tests | ADR-0006 principles approved; component design/threat/test gates and Phase 2 verification pending; privileged operator risk remains |
 | R04: CI whitespace command inspected no committed changes | P2 | First-parent committed diff with fetch-depth 2; synthetic bad feature/merge commits detected | Tooling resolved and remotely passed on the preceding reviewed head; recheck current head after updates |
 | R05: stale verification text and incomplete Project resolution | P2 | Record empty bootstrap, draft PR and check evidence; document manual Projects setup and protection entitlement denial | Documentation resolved; Projects permission and unavailable protection remain external constraints, not bypassed |
-| R06: logout could imply immediate JWT invalidation | P1 | ADR-0005 specifies BFF/opaque sessions, server tokens, RLS/session gates, refresh races, expiry and offline behavior; three new planned server issues | Design recommendation complete; ADR approval and platform/API/RLS tests pending; delivered data/in-flight operations cannot be recalled |
+| R06: logout could imply immediate JWT invalidation | P1 | ADR-0005 now compares official SDK with BFF alternatives and recommends provider-session/account gates without a duplicate issuer | Security objectives conditionally approved; web storage/timeout/final architecture and runtime evidence pending; issued JWTs/in-flight data cannot be recalled |
 
 References: [ADR index](../adr/README.md),
 [auth ADR](../adr/0005-authentication-and-sessions.md),
@@ -24,8 +24,9 @@ References: [ADR index](../adr/README.md),
 
 - Replaced mandatory one-reviewer/CODEOWNERS guidance with zero required reviews
   for the solo account, while retaining explicit founder merge authorization.
-- Aligned architecture/API/environment configuration with the recommended BFF;
-  removed the direct-client JWT path and initial signed download URLs.
+- Replaced the earlier BFF assumption with an official-SDK-first comparison;
+  synchronized API/data/environment/backlog references. No reusable signed
+  download URLs are planned; file intake does not require an auth session issuer.
 - Aligned INT-009 payment-provider feasibility to Phase 4 billing, matching the
   integration plan's existing exception; other integrations remain later.
 - Distinguished internal provenance from Phase 2 and later user-facing version
@@ -36,7 +37,7 @@ References: [ADR index](../adr/README.md),
 ## Open risks and recommendation
 
 Accept or amend the proposed ADRs before treating their designs as settled.
-Gateway hosting/key management, scanner/worker limits, privacy/retention, operational
+Auth storage/timeout choices, scanner/worker limits, privacy/retention, operational
 targets and billing/store feasibility remain phase-gated decisions. Manual GitHub
 governance cannot enforce branch safety on the current entitlement. No compliance,
 production security, native build or implemented feature claim is made.

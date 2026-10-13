@@ -10,8 +10,8 @@ Status: Conceptual proposal; no migrations or tables have been created.
 | workspaces | id, type=personal, owner_user_id, lifecycle state | 1 |
 | memberships | workspace_id + user_id unique, role, revoked_at | 1 |
 | preferences | user_id, theme, notification/AI preferences, locale=en | 1 |
-| account_security/app_sessions | user_id, account auth_version/status; session digest, provider session mapping, expiry/revocation | 1 |
-| session_credentials | private schema; encrypted provider tokens, key/refresh version; no client grants | 1 |
+| account_security | user_id, server-owned account lifecycle/status; no tokens; exact schema gated by ADR-0005 | 1 |
+| provider session authorization | Read-only narrow helper using verified user/session claims and provider state; no duplicate app_sessions/token vault selected | 1 |
 | documents | id, workspace_id, created_by, current_version_id, title, category, lifecycle | 2 |
 | document_versions | id, workspace_id, document_id, object key, hash, size, scan state | 2 |
 | extracted_fields | workspace_id, version_id, analysis_run_id, suggested field key/value, source location, uncertainty, review state; confirmed values are separate | 2 |
@@ -57,7 +57,7 @@ and privileged job paths. Policies should avoid recursive membership lookups.
 Any security-definer function gets fixed search_path, narrow grants and review.
 
 Storage keys use random IDs under a workspace prefix, never identifying filenames.
-Storage policies verify active application session/account state and resource
+Storage policies verify active provider session/account state and resource
 access; a prefix alone is not authorization. Initial downloads are gateway streams,
 not reusable signed URLs. Revocation denies subsequent authorization checks;
 already delivered bytes/in-flight operations cannot be recalled. A later signed
@@ -75,7 +75,7 @@ access grant. Shared workspaces never inherit personal files automatically.
 [ADR-0006](../adr/0006-workspace-ownership-and-document-provenance.md) defines
 future roles, controlled grants, owner transfer/deletion and byte-preserving OCR/AI
 provenance, including composite artifact/run/source FKs and overwrite-race tests.
-Session state, credential isolation and RLS helper requirements are defined in
+Provider session state, protected client storage and RLS helper gates are defined in
 [ADR-0005](../adr/0005-authentication-and-sessions.md).
 
 Use UUID identifiers, timestamptz for instants and `date` for date-only obligations.

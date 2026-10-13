@@ -41,6 +41,7 @@ from pending GitHub and product work.
 - [Post-creation PR review](engineering/foundation-review.md)
 - [Solo-founder GitHub governance](engineering/github-governance.md)
 - [Final Phase 0 readiness report](engineering/phase-0-readiness.md)
+- [Final Phase 0 approval checklist](engineering/phase-0-approval-checklist.md)
 - [Current project status](../PROJECT_STATUS.md)
 
 ## Status vocabulary
