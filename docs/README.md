@@ -39,6 +39,9 @@ from pending GitHub and product work.
 - [Release, rollback and incidents](engineering/release.md)
 - [Verification record](engineering/verification.md)
 - [Post-creation PR review](engineering/foundation-review.md)
+- [Solo-founder GitHub governance](engineering/github-governance.md)
+- [Final Phase 0 readiness report](engineering/phase-0-readiness.md)
+- [Current project status](../PROJECT_STATUS.md)
 
 ## Status vocabulary
 

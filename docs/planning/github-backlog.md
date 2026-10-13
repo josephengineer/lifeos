@@ -1,8 +1,9 @@
 # GitHub backlog
 
-Prepared 2026-10-10 in the verified private repository. All issues remain open;
-Phase 1 work is Planned and requires founder approval. Dependencies use stable
-P1 identifiers in the [ordered backlog](phase-1-backlog.md).
+Updated 2026-10-10 in the verified private repository. One Phase 0 issue and
+20 proposed Phase 1 issues remain open. The three BFF issues are planning only;
+architecture acceptance and Phase 1 authorization are still pending. Execution
+order matches the [local backlog](phase-1-backlog.md), not issue-number order.
 
 - [Phase 0: Product and engineering foundation](https://github.com/josephengineer/lifeos/issues/1)
 - [P1-01: Validate and pin the universal toolchain](https://github.com/josephengineer/lifeos/issues/2)
@@ -14,6 +15,9 @@ P1 identifiers in the [ordered backlog](phase-1-backlog.md).
 - [P1-07: Build responsive navigation and standard state views](https://github.com/josephengineer/lifeos/issues/8)
 - [P1-08: Add local profile and personal workspace migrations](https://github.com/josephengineer/lifeos/issues/9)
 - [P1-09: Implement idempotent identity provisioning](https://github.com/josephengineer/lifeos/issues/10)
+- [P1-18: Establish the monolith auth gateway transport](https://github.com/josephengineer/lifeos/issues/20)
+- [P1-19: Add session registry and RLS authorization gates](https://github.com/josephengineer/lifeos/issues/21)
+- [P1-20: Implement refresh, revocation and expiry lifecycle](https://github.com/josephengineer/lifeos/issues/22)
 - [P1-10: Implement platform session adapters](https://github.com/josephengineer/lifeos/issues/11)
 - [P1-11: Add email registration and verification](https://github.com/josephengineer/lifeos/issues/12)
 - [P1-12: Add login, logout and route/session recovery](https://github.com/josephengineer/lifeos/issues/13)

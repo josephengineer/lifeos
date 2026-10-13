@@ -33,6 +33,15 @@ merge. Flaky tests need an owner and repair; no silent blanket skipping.
 
 ## Foundation gate
 
+The mandatory planned auth matrix is in
+[ADR-0005](../adr/0005-authentication-and-sessions.md): native reinstall/storage,
+CSRF, refresh/revoke races, direct-provider JWT bypass, idle/absolute expiry and
+deletion_pending denial. The planned ownership/immutability matrix is in
+[ADR-0006](../adr/0006-workspace-ownership-and-document-provenance.md): matching
+personal owner, original-byte hash preservation across OCR/AI, extraction-worker
+write denial, sealed-upload race tests, source/derived tenant FKs and future shared
+role/grant/transfer/deletion cases. These are release requirements, not executed tests.
+
 `python scripts/check_foundation.py` validates required artifacts, all 15 module
 catalogs, feature IDs/statuses, source-vision traceability, local links and text
 hygiene. `git diff --check` complements it. Mutation probes should demonstrate

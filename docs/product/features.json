@@ -111,12 +111,12 @@
     "id": "ID-010",
     "module": 1,
     "capability": "Device/session management",
-    "description": "List sessions and revoke a selected session.",
+    "description": "List own sessions and revoke the selected server-managed session.",
     "priority": "P1",
     "phase": 4,
     "dependencies": "Phase 1 app/config baseline",
     "story": "As an account holder, I want support for device/session management so I can access and control my account safely.",
-    "acceptance": "List sessions and revoke a selected session; subsequent access fails.",
+    "acceptance": "After confirmed server revocation, subsequent authorization checks deny the session; explain offline logout and in-flight access limits.",
     "status": "Planned"
   },
   {
@@ -327,12 +327,12 @@
     "id": "DOC-004",
     "module": 3,
     "capability": "File preview and download",
-    "description": "Preview only scanned accepted files and reauthorize each download request.",
+    "description": "Serve scanned accepted versions through authenticated gateway preview/download.",
     "priority": "P1",
     "phase": 2,
     "dependencies": "ID-001; private storage and worker runtime",
     "story": "As an account holder, I want support for file preview and download so I can find and manage my private documents.",
-    "acceptance": "Preview only scanned accepted files and reauthorize each download request.",
+    "acceptance": "Reauthorize the exact accepted version and stream bytes without reusable bearer URLs; deny revoked sessions and cross-workspace reads.",
     "status": "Planned"
   },
   {
@@ -411,12 +411,12 @@
     "id": "DOC-011",
     "module": 3,
     "capability": "OCR and text extraction",
-    "description": "Extract text from approved multilingual synthetic samples and show unsupported-language errors.",
+    "description": "Extract text into a derivative bound to an immutable accepted original.",
     "priority": "P1",
     "phase": 2,
     "dependencies": "ID-001; private storage and worker runtime",
     "story": "As an account holder, I want support for OCR and text extraction so I can find and manage my private documents.",
-    "acceptance": "Extract text from approved multilingual synthetic samples and show unsupported-language errors.",
+    "acceptance": "Extract approved multilingual synthetic samples without changing original hashes; preserve source/version provenance and expose unsupported-language errors.",
     "status": "Planned"
   },
   {
@@ -435,12 +435,12 @@
     "id": "DOC-013",
     "module": 3,
     "capability": "Structured field extraction",
-    "description": "Validate typed extracted values and retain source location and confirmation state.",
+    "description": "Keep typed AI extractions separate from original bytes and confirmed facts.",
     "priority": "P1",
     "phase": 2,
     "dependencies": "ID-001; private storage and worker runtime",
     "story": "As an account holder, I want support for structured field extraction so I can find and manage my private documents.",
-    "acceptance": "Validate typed extracted values and retain source location and confirmation state.",
+    "acceptance": "Validate typed values, source/run IDs and same-workspace references; reanalysis cannot overwrite originals or user-confirmed fields.",
     "status": "Planned"
   },
   {
@@ -495,12 +495,12 @@
     "id": "DOC-018",
     "module": 3,
     "capability": "Controlled document sharing",
-    "description": "Grant explicit scoped access and verify revocation plus signed-link expiry behavior.",
+    "description": "Grant explicit read access to an authenticated recipient for a chosen document.",
     "priority": "P2",
     "phase": 6,
     "dependencies": "ID-001; private storage and worker runtime",
     "story": "As an account holder, I want support for controlled document sharing so I can find and manage my private documents.",
-    "acceptance": "Grant explicit scoped access and verify revocation plus signed-link expiry behavior.",
+    "acceptance": "Verify grant expiry/revocation and source-listing denial; sharing exposes no other personal records and does not transfer ownership.",
     "status": "Planned"
   },
   {
@@ -1864,9 +1864,9 @@
     "module": 13,
     "capability": "Payment providers",
     "description": "Verify billing/webhook sandbox behavior and applicable storefront policies.",
-    "priority": "P2",
-    "phase": 6,
-    "dependencies": "ID-001; OAuth consent/token security; feasibility research",
+    "priority": "P1",
+    "phase": 4,
+    "dependencies": "ID-001; approved billing/store policy; payment sandbox feasibility",
     "story": "As an account holder, I want support for payment providers so I can use authorized external information and services.",
     "acceptance": "Verify billing/webhook sandbox behavior and applicable storefront policies.",
     "status": "Planned"
@@ -2151,12 +2151,12 @@
     "id": "SET-011",
     "module": 15,
     "capability": "Device/session overview",
-    "description": "List own device/session metadata and enforce revocation.",
+    "description": "List own device/session metadata and request server-side revocation.",
     "priority": "P1",
     "phase": 4,
     "dependencies": "ID-001; platform preference storage",
     "story": "As an account holder, I want support for device/session overview so I can control my account preferences and data.",
-    "acceptance": "List own device/session metadata and enforce revocation.",
+    "acceptance": "Deny subsequent checks after confirmed revocation and distinguish local-only offline logout from confirmed server sign-out.",
     "status": "Planned"
   },
   {

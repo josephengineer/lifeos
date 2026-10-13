@@ -6,7 +6,9 @@ One universal Expo/React Native application, Expo Router and strict TypeScript
 form the client. A modular monolith owns business rules. Supabase provides Auth,
 PostgreSQL and private object storage. Privileged operations and AI execute on
 the server. Background workers run independently of client application lifetime.
-Hosting, worker runtime and package versions remain open decisions.
+The recommended auth gateway is specified in [ADR-0005](../adr/0005-authentication-and-sessions.md).
+API hosting/key management require the Phase 1 spike; worker runtime and package
+versions remain open implementation decisions, with no provisioning authorized.
 
 ## Proposed repository layout
 
@@ -41,33 +43,35 @@ the client dependency graph. Tests verify domain rules without devices or servic
 
 ## Data flow and trust boundaries
 
-1. Client authenticates using Supabase Auth. Client route guards improve UX but
-   never substitute for authorization.
-2. Ordinary user reads/writes may use the Supabase API with user JWT and RLS.
-   Complex mutations go through authenticated server use cases. Both use the
-   same domain invariants; transactional invariants also live in the database.
+1. Each Expo client authenticates through the monolith's API/BFF, which uses
+   Supabase Auth and retains provider tokens server-side. Web uses an HttpOnly
+   opaque cookie; native uses an opaque bearer handle stored in SecureStore.
+2. All application data calls go through the BFF. Ordinary server data adapters
+   use user-scoped JWTs and RLS; direct Supabase endpoints must enforce the same
+   active-session and workspace gates even though clients do not normally call them.
 3. Server verifies identity, active membership and resource ownership, validates
    input, then applies a transaction. Never trust a client-supplied workspace ID.
-4. Upload intent binds a random object key, workspace, expected size/type and
-   short expiry. File bytes land in private quarantine. A worker validates and
-   scans before promotion; preview and extraction consume only accepted files.
-   Finalization freezes a server-verified object version; replacements get a new
-   quarantine flow, so bytes cannot be swapped after the security scan.
+4. Bounded gateway upload binds a random key, workspace, size/type and one-use
+   intake ID. Seal bytes to a server-only immutable version before scanning.
+   Preview and extraction consume accepted sealed versions only; replacements
+   get a fresh intake. Serve private bytes through the gateway, not public or
+   reusable signed links. Preserve original bytes separately from derivatives
+   under [ADR-0006](../adr/0006-workspace-ownership-and-document-provenance.md).
 5. Committed work emits an outbox job. Workers claim leases, recheck authorization
    and consent, use bounded retry/backoff and record a redacted outcome.
 6. AI sees only authorized necessary content after consent and scan approval.
    Structured suggestions return for human review; no document can authorize tools.
 
 Native session storage, camera capture, push registration and file selection use
-platform adapters. Web session strategy must address XSS/CSRF and be validated
-before implementation. Do not assume web storage matches native secure storage.
+platform adapters. The web cookie/CSRF design and native storage behavior are
+specified in ADR-0005 and must be validated before release.
 
 Session invalidation is a separate authorization requirement from JWT signature
 validation. Supabase sign-out does not instantly invalidate every issued access
-token. Phase 1 must choose and test a revocation strategy covering custom APIs,
-direct database/storage access and cached client data. Do not promise immediate
-revocation from a client-side logout alone; see the pending session decision D15
-and [official session guidance](https://supabase.com/docs/guides/auth/sessions).
+token. ADR-0005 recommends authoritative LifeOS session state checked at the BFF,
+RLS and storage boundaries. D15 asks the founder to accept that design; tests and
+implementation remain Phase 1/2 work. No positive authorization cache or claim
+that client-side logout alone revokes a JWT is permitted.
 
 ## Reliability and operations
 

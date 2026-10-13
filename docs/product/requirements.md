@@ -27,6 +27,12 @@ later phase are not promised at beta.
 
 - Users cannot read or modify another workspace via API, storage, search, jobs
   or guessed identifiers; prove this with negative integration tests.
+- Recommended platform auth design is Supabase Auth behind the monolith BFF with
+  server-managed sessions (ADR-0005); founder acceptance is pending. RLS remains
+  enforced even for direct endpoints. Phase 1 includes the server session baseline.
+- Personal workspace ownership is explicit and cannot be reassigned implicitly.
+  OCR/AI produce separate derived records and never rewrite original file bytes
+  (ADR-0006). Family/business sharing remains Phase 6.
 - Uploads remain quarantined until validation; rejected files are not previewed
   or sent to OCR/AI. Manual categorization works during provider outages.
 - Dates preserve date-only versus instant semantics; reminders survive closed

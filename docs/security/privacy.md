@@ -7,6 +7,7 @@ review before public release. No real user data has been processed by this proje
 | Data class | Purpose and access | Retention/deletion proposal |
 | --- | --- | --- |
 | Identity/profile | Account operation; account holder and constrained services | Active account; erase or minimize through verified deletion |
+| Application sessions/provider credentials | Auth gateway only; hashed handles and encrypted server-held tokens | Revoke on logout/expiry; erase credentials after provider cleanup; minimal audit retention separately approved |
 | Documents/metadata | User storage and administrative records; workspace-scoped | User-controlled active/trash lifecycle; trash window pending approval |
 | OCR/extractions/vectors | Optional search/AI assistance; scoped workers | Delete/invalidate with source and applicable AI preference changes |
 | Tasks/reminders/device tokens | Scheduling and delivery | User lifecycle; expire invalid device tokens and obsolete deliveries |
@@ -33,6 +34,8 @@ Reauthenticate -> authorize request -> create scoped snapshot job -> include
 document originals and machine-readable metadata/relationships -> deliver through
 expiring authenticated access -> expire artifact. Protect against export link
 leakage and exclude other members' private items. Document partial failures.
+The initial export download is a session-authorized gateway stream, not a reusable
+signed bearer URL (ADR-0005).
 
 ## Deletion workflow
 
@@ -42,6 +45,10 @@ vectors, chats, queues and exports -> delete or segregate legally retained recor
 -> retry failures -> verify manifest -> confirm outcome. Clarify billing cancellation
 and retained receipts before final confirmation. Define any reversal window before
 implementation. Never report success while cleanup is still incomplete.
+The deletion_pending state and account auth_version deny all existing sessions
+before asynchronous cleanup. Future shared-workspace deletion first resolves sole
+ownership through explicit transfer or separately confirmed workspace deletion;
+never silently delete other members' data. See ADR-0005/0006 for those boundaries.
 
 Backups may retain deleted records until expiry. Explain this to users, prevent
 normal access and reapply deletion records after restore. Third-party deletion

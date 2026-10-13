@@ -13,6 +13,10 @@ Authorized private upload -> quarantine/scan -> text extraction/OCR -> language
 identification -> optional classification/structured extraction -> schema checks
 -> provenance storage -> user review. Store extractor/model/prompt versions and
 source version/page/offset. Do not overwrite confirmed fields with new suggestions.
+OCR text, previews, embeddings and model output are versioned derivatives; original
+uploaded bytes never change. Extraction workers cannot mutate originals. Reanalysis
+preserves source/run identity and replacements restart quarantine. See
+[ADR-0006](../adr/0006-workspace-ownership-and-document-provenance.md).
 Confidence scores are signals, not calibrated guarantees; low support requires
 review or abstention. OCR provider limits/language support require feasibility tests.
 

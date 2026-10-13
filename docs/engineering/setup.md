@@ -26,8 +26,10 @@ versions from current official compatibility guidance rather than this proposal.
 Use separate Supabase local development and staging projects. Provision local
 schema from reviewed migrations and synthetic seed data. Commit only example
 configuration; `.env.example` names are proposals, not operational setup today.
-Publishable client values are public. Server secrets belong to server secret
-stores, never `EXPO_PUBLIC_*` values or client imports.
+The proposed client config is the API/BFF URL and environment name. Supabase
+configuration and provider-session credentials are server-held under ADR-0005;
+no secret belongs in `EXPO_PUBLIC_*` values or client imports. Local web uses
+same-origin API routing; native devices need a reachable local-server address.
 
 Native Android needs an emulator/device and toolchain. iOS local simulator/build
 validation requires macOS/Xcode; this Windows machine cannot prove it. EAS is a

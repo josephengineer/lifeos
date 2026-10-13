@@ -10,7 +10,7 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = [
-    'README.md', 'AGENTS.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'SECURITY.md',
+    'README.md', 'PROJECT_STATUS.md', 'AGENTS.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'SECURITY.md',
     '.editorconfig', '.gitignore', '.gitattributes', '.env.example',
     '.github/CODEOWNERS', '.github/PULL_REQUEST_TEMPLATE.md',
     '.github/ISSUE_TEMPLATE/work-item.md', '.github/ISSUE_TEMPLATE/bug.md',
@@ -31,9 +31,12 @@ REQUIRED = [
     'docs/engineering/testing.md', 'docs/engineering/ci.md',
     'docs/engineering/release.md', 'docs/engineering/verification.md',
     'docs/engineering/foundation-review.md',
+    'docs/engineering/github-governance.md', 'docs/engineering/phase-0-readiness.md',
     'docs/adr/README.md', 'docs/adr/0001-modular-monolith.md',
     'docs/adr/0002-isolation.md', 'docs/adr/0003-ai-and-actions.md',
     'docs/adr/0004-foundation-tooling.md', 'scripts/check_foundation.py',
+    'docs/adr/0005-authentication-and-sessions.md',
+    'docs/adr/0006-workspace-ownership-and-document-provenance.md',
 ]
 STATUSES = {'Planned', 'In Development', 'Implemented', 'Verified', 'Released', 'Deprecated'}
 

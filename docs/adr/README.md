@@ -8,3 +8,5 @@ than silently rewriting accepted decisions.
 - [0002: Workspace isolation and private storage](0002-isolation.md)
 - [0003: AI suggestions and approved actions](0003-ai-and-actions.md)
 - [0004: Foundation tooling and licensing](0004-foundation-tooling.md)
+- [0005: Authentication and sessions](0005-authentication-and-sessions.md)
+- [0006: Workspace ownership and document provenance](0006-workspace-ownership-and-document-provenance.md)

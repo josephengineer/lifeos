@@ -31,3 +31,6 @@
 - A task is Done only after acceptance criteria, tests, CI, security review,
   English/localization checks, docs, review and required approved merge. Record
   blockers and limitations; generating files alone is not Done.
+
+- Read and update `PROJECT_STATUS.md` in every development task; record completed
+  work, pending decisions, branch/PR, validation evidence and the next action.

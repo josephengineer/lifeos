@@ -7,12 +7,17 @@ Status: Conceptual proposal; no migrations or tables have been created.
 | Entity | Key fields and relations | Initial phase |
 | --- | --- | --- |
 | profiles | user_id references auth identity; display name, time zone | 1 |
-| workspaces | id, type=personal, owner_id, lifecycle state | 1 |
+| workspaces | id, type=personal, owner_user_id, lifecycle state | 1 |
 | memberships | workspace_id + user_id unique, role, revoked_at | 1 |
 | preferences | user_id, theme, notification/AI preferences, locale=en | 1 |
-| documents | id, workspace_id, owner_id, title, category, lifecycle | 2 |
+| account_security/app_sessions | user_id, account auth_version/status; session digest, provider session mapping, expiry/revocation | 1 |
+| session_credentials | private schema; encrypted provider tokens, key/refresh version; no client grants | 1 |
+| documents | id, workspace_id, created_by, current_version_id, title, category, lifecycle | 2 |
 | document_versions | id, workspace_id, document_id, object key, hash, size, scan state | 2 |
-| extracted_fields | workspace_id, version_id, field key/value, source location, confidence, confirmation | 2 |
+| extracted_fields | workspace_id, version_id, analysis_run_id, suggested field key/value, source location, uncertainty, review state; confirmed values are separate | 2 |
+| analysis_runs/derived_artifacts | workspace_id, immutable source version, extractor/model/prompt/consent versions, separate outputs | 2 |
+| confirmed_fields | workspace_id, user-confirmed value, source when relevant, confirming actor/time; not extractor-writable | 2 |
+| document_grants | authenticated recipient read grant, source document, expiry/revocation; no workspace-list access | 6 |
 | tags/document_tags | workspace-scoped tag and document links | 2 |
 | tasks | id, workspace_id, title, parent_id, due date/instant, status | 3 |
 | reminders | id, workspace_id, task_id, zone, recurrence, next due instant | 3 |
@@ -39,7 +44,8 @@ with a constraint requiring exactly the corresponding scope key. Never authorize
 account records by a client-selected workspace. Unique `(workspace_id, id)` parent
 keys and composite foreign keys prevent cross-workspace relationships.
 Membership is queried from authoritative database state, not client claims.
-One personal workspace per owner at launch uses a partial unique index; provisioning
+One personal workspace per owner at launch uses a partial unique index and exactly
+one matching active owner membership; provisioning
 identity/profile/workspace/membership is idempotent and transactionally consistent.
 Invitation and role-management APIs do not exist until collaboration is approved.
 
@@ -51,9 +57,11 @@ and privileged job paths. Policies should avoid recursive membership lookups.
 Any security-definer function gets fixed search_path, narrow grants and review.
 
 Storage keys use random IDs under a workspace prefix, never identifying filenames.
-Storage policies verify database access; a prefix alone is not authorization.
-Membership revocation blocks new downloads; already issued signed URLs can remain
-valid until expiry. Keep lifetimes short and document that residual risk.
+Storage policies verify active application session/account state and resource
+access; a prefix alone is not authorization. Initial downloads are gateway streams,
+not reusable signed URLs. Revocation denies subsequent authorization checks;
+already delivered bytes/in-flight operations cannot be recalled. A later signed
+capability would need explicit review of its residual validity window.
 
 Uploaded object versions are immutable after finalization. Clients cannot overwrite
 or promote an accepted version. Finalization binds the exact server-verified bytes
@@ -61,6 +69,14 @@ and digest to a version; scan, preview and extraction all refer to that version.
 Replacement creates a fresh quarantined version and requires a new scan. Test
 overwrite attempts and changes between upload, scan and promotion; never trust a
 client-supplied content hash or an editable accepted flag.
+
+The workspace owns each document; created_by is attribution, not an independent
+access grant. Shared workspaces never inherit personal files automatically.
+[ADR-0006](../adr/0006-workspace-ownership-and-document-provenance.md) defines
+future roles, controlled grants, owner transfer/deletion and byte-preserving OCR/AI
+provenance, including composite artifact/run/source FKs and overwrite-race tests.
+Session state, credential isolation and RLS helper requirements are defined in
+[ADR-0005](../adr/0005-authentication-and-sessions.md).
 
 Use UUID identifiers, timestamptz for instants and `date` for date-only obligations.
 Store an IANA zone plus recurrence definition where local wall time matters. Money

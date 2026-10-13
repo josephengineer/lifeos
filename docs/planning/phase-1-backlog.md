@@ -2,6 +2,8 @@
 
 Status: Planned. Execute only after founder approval of Phase 1 scope and ADRs.
 Each item is a separate small issue/PR; split again if implementation grows.
+There are 20 proposed work items. IDs are stable: newly scoped P1-18 through
+P1-20 appear before P1-10 in execution order because auth now includes a BFF.
 Order is dependency-aware, not a commitment to parallel implementation or dates.
 All items are P1 High unless stated otherwise. Feature IDs refer to the catalog.
 
@@ -16,7 +18,9 @@ Type: Research. Features: foundation for all Phase 1 features.
 Context: package compatibility and build constraints are unverified.
 Desired behavior/scope: select Expo/React Native/Router/TypeScript, supported
 Node/npm and compatible test tools using current official docs; record versions
-and Windows/macOS/EAS constraints in an ADR update. No paid provisioning.
+and Windows/macOS/EAS constraints in an ADR update. Validate BFF hosting,
+same-origin routing, session key management and bounded streaming feasibility
+under ADR-0005 / D16. No paid provisioning.
 Acceptance: exact compatibility evidence and reproducible scaffold command are
 recorded; alternatives and native validation requirements are explicit.
 Dependencies: approved ADR-0001 and D03/D10 decisions as relevant.
@@ -96,7 +100,8 @@ Type: Feature. Features: ID-004; groundwork for ID-011 without workspace switchi
 Context: identity data needs a tenant boundary before CRUD.
 Desired behavior/scope: profiles, personal workspaces, owner memberships and
 minimal preferences with constraints, RLS and synthetic seeds.
-Acceptance: one personal workspace per owner, composite tenant constraints,
+Acceptance: one personal workspace per owner with exactly one matching owner membership,
+no personal-workspace transfer, account/session table isolation, composite tenant constraints,
 default-deny grants and no client role/owner mutation; clean reset reproducible.
 Dependencies: P1-04 and approved ADR-0002.
 Tests: migration reset/upgrade; anonymous, owner and second-user read/write matrix.
@@ -113,27 +118,73 @@ leave no partial tenant data; identities cannot choose another owner.
 Dependencies: P1-08. Tests: retry, rollback, concurrent signup and spoofed-owner cases.
 Security/privacy: audit only reference IDs and outcome codes.
 
+## P1-18: Establish the monolith auth gateway transport
+
+Type: Feature. Features: ID-001, ID-002, ID-003 infrastructure.
+Context: ADR-0005 moves credential transport behind a server-side gateway.
+Desired behavior/scope: same-origin web API routing and TLS-native API contracts,
+web cookie/CSRF protections, bounded request validation, no-store responses and
+redacted error handling. Do not add a second frontend or issue pretend sessions.
+Acceptance: web CSRF/login-CSRF and conflicting cookie/bearer modes fail closed;
+no provider secret or token reaches a client response, bundle or log.
+Dependencies: P1-04, P1-08, approved ADR-0005 and D16 hosting decision.
+Tests: transport, origin/CSRF, input limits, log redaction and environment isolation.
+Security/privacy: password/token bodies excluded from logging and error telemetry.
+
+## P1-19: Add session registry and RLS authorization gates
+
+Type: Feature. Features: ID-001 and personal workspace access.
+Context: JWT signature validity alone does not prove an active LifeOS session.
+Desired behavior/scope: account_security, app_sessions and isolated encrypted
+credential storage; verified provider-session registration, owner-only metadata,
+and narrowly granted session-state helper for user-scoped RLS.
+Acceptance: unmatched/direct-provider sessions, revoked account versions and
+cross-tenant access are denied; clients cannot write lifecycle/session fields;
+no credential table is exposed. Test owner membership invariants from ADR-0006.
+Dependencies: P1-09, P1-18, accepted ADR-0005/0006.
+Tests: clean migrations, policy matrix, invalid claim/session mapping, private-table
+denial and fail-closed session-store behavior. Storage gates join Phase 2.
+Security/privacy: keep encryption keys outside DB; review helper grants/search_path.
+
+## P1-20: Implement refresh, revocation and expiry lifecycle
+
+Type: Feature. Features: ID-001, ID-003; core security prerequisite for ID-010 later.
+Context: races must not restore a logged-out session or bypass expiry.
+Desired behavior/scope: serialized provider refresh, compare-and-swap credential
+rotation, current/all-session revocation, auth_version checks, idle/absolute limits
+and restricted password-recovery completion under ADR-0005. Device-management UI
+remains Phase 4; account-deletion workflow remains Phase 4.
+Acceptance: replay of issued JWTs after revocation fails application/RLS gates;
+provider outage yields a recoverable error; in-flight refresh cannot reactivate
+revoked sessions; normal logout does not cancel durable reminders.
+Dependencies: P1-19. Tests: concurrent refresh/revoke, expiry boundaries, already-issued
+JWT replay, provider sign-out detection, logout retries and deletion_pending denial.
+Security/privacy: exact proposed timeout policy requires founder acceptance;
+no claim that JWT signatures or already-delivered bytes can be retroactively revoked.
+
 ## P1-10: Implement platform session adapters
 
 Type: Feature. Features: ID-001.
 Context: web and native have different storage/session threats.
-Desired behavior/scope: reviewed web session approach and native secure-storage
-adapter, expiry/refresh and logout cleanup; record decision before integration.
+Desired behavior/scope: browser cookie/CSRF client adapter and native SecureStore
+opaque-handle adapter under ADR-0005; no client Supabase tokens. Server refresh
+and revocation are provided by P1-20. Clear private caches and explain offline logout.
 Acceptance: expired/revoked sessions fail safely; background/resume works;
 logout clears local private state; credentials never appear in logs.
-Dependencies: P1-04, P1-07, D15. Tests: expiry/refresh failure, logout and platform
+Dependencies: P1-04, P1-07, P1-20, approved ADR-0005 / D15. Tests: expiry/refresh failure, logout and platform
 adapter tests; replay an already-issued JWT after logout/revocation against both
 custom APIs and direct database/storage paths. Record the measured denial boundary.
 Security/privacy: review XSS/CSRF implications and storage limitations explicitly.
-Choose the server/RLS enforcement approach needed to meet the agreed revocation
-semantics; stopping refresh or clearing client storage alone is insufficient.
+Use the approved server/RLS active-session gate; stopping refresh or clearing
+client storage alone is insufficient. Test Keychain reinstall and Android backup behavior.
 
 ## P1-11: Add email registration and verification
 
 Type: Feature. Features: ID-001, ID-002.
 Context: new users need a verified identity and recoverable signup.
 Desired behavior/scope: localized forms, verification callback and resend recovery
-using development mail capture; connect idempotent provisioning.
+through the BFF using development mail capture; connect idempotent provisioning
+and the server-managed session registry. Use English resources for provider templates.
 Acceptance: verified signup reaches its own workspace; expired/replayed links
 fail safely; generic responses avoid account enumeration.
 Dependencies: P1-05, P1-09, P1-10.
@@ -146,8 +197,9 @@ Type: Feature. Features: ID-001.
 Context: returning users need reliable access without stale private screens.
 Desired behavior/scope: email login/logout, verification-required UX, session
 restoration and interrupted navigation recovery.
-Acceptance: errors are localized and non-enumerating; logout prevents subsequent
-private reads; back navigation cannot reveal cached private content.
+Acceptance: errors are localized and non-enumerating; confirmed server logout
+denies subsequent authorization checks under ADR-0005; offline logout never claims
+server revocation; back navigation cannot reveal cached private content.
 Dependencies: P1-10, P1-11. Tests: successful/failed login, expiry and logout E2E.
 Security/privacy: bounded retries, no passwords in telemetry and server authorization.
 

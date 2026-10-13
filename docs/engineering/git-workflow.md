@@ -16,32 +16,25 @@ local-only history was preserved locally; the published foundation was replayed
 with GitHub noreply author metadata and shared ancestry. No force push was used.
 This bootstrap approval does not authorize a merge or Phase 1 implementation.
 
-## Founder branch-protection checklist
+## Solo-founder protection recommendation
 
-After main exists and the Foundation workflow has run, open repository Settings
-and configure a branch rule/ruleset targeting main using controls your plan offers.
+The [governance report](github-governance.md) records the read-only inspection and
+exact recommended configuration. GitHub returned an upgrade requirement for both
+private branch protection and rulesets; main is currently unprotected. No settings
+were changed and the repository must remain private.
 
-1. Require PRs before integration; disallow direct pushes, force pushes and deletion.
-2. Require the actual emitted `Foundation checks` status, confirmed from a run.
-   Add app checks when implemented; do not select nonexistent check names.
-3. Require conversation resolution where offered. Require review of the most
-   recent change and dismiss stale approval where appropriate.
-4. Require one eligible human approval and CODEOWNERS review where supported.
-   Configure admin/bypass restrictions deliberately; do not assume admins are covered.
-5. Use squash merge, and restrict who can integrate. Verify with a disposable PR
-   that failing checks/direct pushes are actually blocked.
-6. Enable secret scanning/push protection where available for the private repo
-   and current plan. Enable dependency alerts/update PRs. Review cost before upgrades.
+If supported by the founder's chosen plan, require PRs and the observed
+`Foundation checks` status, require an up-to-date branch and resolved conversations,
+and block force pushes and deletion of main. Use **zero required approving reviews**
+and leave mandatory CODEOWNERS/latest-push approval off for the solo account.
+CODEOWNERS remains informational. The founder still explicitly authorizes every
+merge; this human decision must not be confused with a self-approval in GitHub.
 
-Private repository protections depend on GitHub plan. If unavailable, retain a
-documented human merge gate; it is weaker than enforced protection. Do not buy
-a plan or change security-sensitive permissions without founder approval.
-
-GitHub prevents authors approving their own PR. If the only account is both
-author and founder, document founder approval in the PR and retain manual gating,
-or establish an independently authorized contributor/reviewer before enforcing
-an impossible approval rule. Do not create an automation identity or grant access
-without approval. CODEOWNERS alone does not enforce approval.
+Do not configure a second-reviewer requirement, buy a plan, enable a ruleset or
+change merge settings without approval. Until protection is available, the manual
+PR/CI/approval policy cannot technically prevent an authorized account from pushing
+or deleting main. Founder acceptance of that risk, or enabling an eligible plan
+and approving protection configuration, is required before recommending merge.
 
 ## Issues and project board
 
@@ -62,7 +55,7 @@ The existing credential was denied Projects access. No scope changes or alternat
 credentials were attempted. To proceed manually, the founder can open their GitHub
 profile, choose Projects -> New project -> Board, name it LifeOS, and verify its
 visibility is Private in project settings. Configure the six Status values above,
-add issues #1-18 and PR #19, and link the board to this repository. Keep Phase 1 in
+add issues #1-18 and #20-22, plus PR #19, and link the board to this repository. Keep Phase 1 in
 Backlog until approved, and Phase 0 In Review while the PR remains unmerged.
 See [GitHub's project creation guide](https://docs.github.com/en/issues/planning-and-tracking-with-projects/creating-projects/creating-a-project).
 

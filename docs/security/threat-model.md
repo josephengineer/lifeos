@@ -15,9 +15,9 @@ Client code, documents, provider callbacks and model output are untrusted.
 | Threat | Proposed control | Required verification | Residual risk |
 | --- | --- | --- | --- |
 | Cross-tenant reads/writes or guessed IDs | RLS, server checks, composite tenant FKs | Two-user CRUD/storage/search/jobs denial tests | Privileged service paths can bypass RLS |
-| Session theft/account takeover | Platform session adapters, reauth for sensitive actions, rate limits, MFA later | Expiry, logout, reset replay, stolen/revoked session cases | Compromised device/browser remains a risk |
+| Session theft/account takeover | ADR-0005 BFF, opaque platform handles, server token vault, active-session RLS gates, reauth and rate limits | CSRF, expiry, refresh/revoke races, direct JWT bypass, reset replay and native reinstall | Compromised device/browser/server and in-flight operations remain risks |
 | Privilege escalation | No client membership/role writes, narrow grants | Crafted role/owner/workspace mutation tests | Operator credentials require separate governance |
-| Public or leaked document access | Private buckets, authorized short signed URLs | Anonymous denial, cross-tenant denial, expiry tests | Previously downloaded bytes cannot be revoked |
+| Public or leaked document access | Private buckets, authenticated gateway streams, ADR-0006 workspace/grant checks | Anonymous and cross-tenant denial, revoked-session/member/grant reads | Previously downloaded bytes cannot be revoked |
 | Malicious PDFs/images, decompression bombs or bytes swapped after scan | Size/type/signature limits, quarantine, immutable finalized versions, scanner, resource-bound parsers | Mismatch, oversized, malformed, scanner-failure and post-scan overwrite fixtures | New parser exploits; scanner is not a guarantee |
 | Prompt injection/data exfiltration | Scope before retrieval, no document authority, tool allowlists | Multilingual malicious files and forged citation tests | Model errors and incomplete detection |
 | Forged approval or duplicate action | Immutable approval hash, reauth, idempotency, reconciliation | Altered payload, expiry and timeout/retry tests | Some providers lack strong idempotency |
@@ -41,3 +41,8 @@ and backup handling. Do not claim end-to-end encryption: server-side OCR/AI need
 access to plaintext. Do not describe the system as production-secure or compliant
 based on these plans. Data region, scanner, token storage, session strategy and
 incident notification obligations remain open decisions.
+
+ADR-0005/0006 are recommended designs awaiting founder acceptance. A server token
+vault creates a concentrated credential target and the no-cache session gate adds
+availability/latency costs. Benchmark and review secret-table grants, key rotation,
+RLS helpers and worker credentials before implementation is considered Verified.
