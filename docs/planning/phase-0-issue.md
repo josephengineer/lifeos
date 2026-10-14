@@ -13,7 +13,7 @@ baseline. Feature implementation would otherwise embed unreviewed scope and secu
 
 Prepare the initial documentation, full feature catalog, architecture/security/data
 designs, repository rules, issue/PR templates, actual documentation CI, Phase 1
-backlog, release gates and founder decisions. Reuse the existing private repository.
+backlog, release gates and founder decisions. Reuse the existing repository, now public by founder choice.
 Do not build the app, provision production, select an open-source license or merge.
 
 ## Acceptance criteria
@@ -27,7 +27,7 @@ Do not build the app, provision production, select an open-source license or mer
 
 ## Dependencies
 
-Founder product brief; private repository access; approval for empty main bootstrap
+Founder product brief; repository access; approval for empty main bootstrap
 before opening the initial PR. No credentials are needed for local checks.
 
 ## Testing requirements

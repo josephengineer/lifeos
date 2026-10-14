@@ -55,7 +55,7 @@ building another credential lifecycle.
 
 No reliable monetary estimate exists before region, usage, file limits and hosting
 selection. Supabase's built-in timebox/inactivity controls require Pro or above;
-that is independent of GitHub Pro. No paid Supabase plan is approved. Benchmark
+that is independent of GitHub Free/public repository protection. No paid Supabase plan is approved. Benchmark
 latency, availability and cost in authorized research.
 
 ## Proposed platform storage

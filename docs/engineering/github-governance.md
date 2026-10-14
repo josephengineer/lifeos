@@ -1,117 +1,82 @@
-# GitHub governance decision for a solo founder
+# GitHub governance: public repository on GitHub Free
 
-Reinspected 2026-10-13 using authenticated, read-only GitHub REST requests.
-No repository settings, subscriptions, permissions or visibility were changed.
+Inspected 2026-10-14. The founder changed LifeOS from private to public.
+The agent did not change visibility, billing, permissions or protection settings.
+This supersedes the earlier private-repository/GitHub Pro preference.
 
-Founder decision: **GitHub Pro with protected main is preferred.** Purchase and
-settings changes remain unauthorized. No temporary manual exception was accepted.
+GitHub Free supports protected branches in public repositories. Pro is no longer
+required for this configuration. This is an entitlement statement; the account's
+actual billing plan was not inspected or changed. Private application storage and
+tenant isolation requirements are unchanged by public source visibility.
 
-## Observed evidence
+## Observed configuration
 
-| Read | Result |
+| Read-only evidence | Result |
 | --- | --- |
-| Repository metadata | Private, main is default, current credential has repository admin access |
-| main branch | protected=false; still the zero-file bootstrap commit |
-| GET branches/main/protection | HTTP 403: upgrade to GitHub Pro or make repository public to enable feature |
-| GET rulesets | Same HTTP 403 upgrade requirement |
-| GET rules/branches/main | Same HTTP 403 upgrade requirement |
-| Merge settings | Squash, merge commit and rebase currently allowed; automatic branch deletion disabled |
-| Account plan name | Not returned; do not invent an exact account subscription |
+| Anonymous repository API | visibility=public, private=false; source readable without credentials |
+| Default main | Empty bootstrap cdc1d64; protected=false |
+| Classic main protection endpoint | HTTP 404: Branch not protected |
+| Repository rulesets | Empty list |
+| Effective rules for main | Empty list |
+| Required PR / current CI / up-to-date enforcement | Not configured |
+| Force-push / deletion / admin-bypass prevention | Not enforced by branch protection |
+| Mandatory external reviews | No protection review requirement; does not compensate for missing PR rule |
+| Emitted CI job | Foundation checks, GitHub Actions app ID 15368; passing on published b4540e3 |
+| Private vulnerability reporting | Disabled; no setting change authorized |
 
-Admin access does not remove this availability restriction. GitHub's response is
-evidence that protection/rulesets are unavailable for this private repository's
-current entitlement. Do not make LifeOS public to obtain them and do not attempt
-an alternate credential or endpoint as a bypass. The separate Projects permission
-block remains unchanged; see [manual board setup](git-workflow.md).
+**Merge blocker:** visibility alone does not configure protection. Successful CI
+is informational until the check is required. No destructive push/delete or
+unauthorized merge probe was attempted; missing settings already establish that
+the requested protections are absent. No claim of enforced protection is made.
 
-## Exact plan requirement
+## Exact setup for the founder
 
-The repository API identifies its owner as a **User**, not an organization.
-For this private personal repository, **GitHub Pro** is the minimum paid personal
-plan documented to support protected branches and branch/tag rulesets. GitHub Team
-is the corresponding option for organization-owned private repositories;
-Enterprise plans also support protection. An individual's Pro subscription does
-not supply Team entitlement to an organization. No transfer is recommended.
-Push rulesets are a separate feature and are not needed for the main branch rules.
+No plan upgrade is needed. After separate authorization to change settings:
 
-Recommend GitHub Pro for the present ownership, then separately approve the
-settings below. This identifies the required product, not the current plan: its
-name was not returned. The 403 responses establish the enforcement limitation.
-No subscription or price commitment is made. Official branch/ruleset documentation
-was rechecked on 2026-10-13.
+1. Open repository Settings -> Branches -> Add classic branch protection rule.
+2. Target exactly `main`; enable Require a pull request before merging.
+3. Leave Require approvals unchecked: zero mandatory approvals. Leave Code Owners,
+   stale-approval and most-recent-push approval requirements off.
+4. Require status checks; select the exact `Foundation checks` check, source
+   GitHub Actions where available. Require branches to be up to date.
+5. Require conversation resolution; enable Do not allow bypassing the above settings.
+6. Leave Allow force pushes, Allow deletions and Lock branch unchecked.
+7. Save, then read back the main rule. Avoid conflicting overlapping rules.
 
-## Recommended configuration, if the founder enables a supported plan
+Expected readback: PR rule present, approval count 0, status context Foundation
+checks (app ID 15368 where specified), strict=true, enforce_admins.enabled=true,
+force pushes/deletions disabled and no bypass actors. Also inspect effective
+rulesets for additional constraints. Admins can still edit settings themselves;
+the rule prevents operation-level bypass, not the owner's ability to change policy.
+Do not test force-pushing or deleting main. Any disposable enforcement test needs
+a separately approved setup. Founder still explicitly approves each merge.
 
-Choose one active main ruleset (or equivalent classic protection), not overlapping
-contradictory policies. Preview it before saving and verify it with a test PR.
+Official sources: [protection availability](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+and [classic rule setup](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule).
 
-| Setting | Recommendation |
-| --- | --- |
-| Target / enforcement | Exactly main; active enforcement, including admin where supported |
-| Require pull request | On; no routine direct push or bypass |
-| Required approvals | **0** for the solo-founder workflow |
-| Require CODEOWNERS review | Off; keep CODEOWNERS informational |
-| Latest-push approval / stale-review restrictions | Off where they would require a second person |
-| Required status checks | Exact observed `Foundation checks`, from GitHub Actions where selectable; require branch up to date |
-| Conversation resolution | On where available |
-| Force pushes / non-fast-forward changes | Block |
-| Deletion of main | Block |
-| Merge strategy | Recommend squash only; configure separately after approval |
-| Bypass list | No standing routine bypass; documented explicit emergency procedure |
-| Restrict all updates / lock branch | Off; do not accidentally prevent legitimate PR merges |
+## Public-content and reporting gates
 
-Zero required approvals does not remove the human decision: the founder reviews
-the diff, current-head CI and findings and explicitly authorizes the squash merge.
-An author cannot provide an independent GitHub approval for their own PR. Do not
-create a dummy reviewer or impose a CODEOWNERS requirement that deadlocks this
-single-account repository. Reconsider one independent approval when a second
-authorized human joins. AI review never substitutes for the founder's decision.
+Read the [public exposure review](public-repository-review.md). Product plans and
+security architecture are now public business material. Confirm this scope is
+intentional; do not place customer documents, credentials, confidential agreements
+or unreleased commercial figures in this repository. No open-source license has
+been selected by changing visibility.
 
-## Current-plan fallback and merge recommendation
+GitHub's generated PR merge ref exposed personal author metadata. The report
+omits its value. Before another push, the founder should review GitHub Settings ->
+Emails -> Keep my email addresses private and optionally block command-line pushes
+that expose personal email. Recheck regenerated PR metadata; changing preferences
+does not erase old Git objects or external copies. No history rewrite is authorized.
 
-Until enforcement is available, keep the repository private and all work on PR
-branches. Manually require current-head CI success, resolve discussions, obtain
-explicit founder approval, squash only, and never force-push/delete main. This is
-a procedural control: it **cannot technically prevent** accidental direct pushes,
-force pushes or deletion by an authorized account.
+Private vulnerability reporting is disabled and a dedicated contact is unresolved;
+see SECURITY.md. Enabling it requires separate settings authorization.
+The Project-board permission remains a separate unresolved task; a public code
+repository does not require making the planning board public.
 
-Recommend enabling a supported private-repository plan before merge, subject to
-the founder's own purchase decision and separate approval of the exact settings.
-Alternatively the founder may explicitly accept the documented manual-governance
-risk for Phase 0 only. The founder now prefers Pro; the manual exception is not
-selected. No purchase or configuration has been executed.
-Do not represent unavailable enforcement as configured protection.
+## Merge conditions
 
-Sources checked: [protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
-and [rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets).
-Exact UI labels and plan capabilities must be rechecked when configuration is approved.
-
-## Exact founder setup instructions (not executed)
-
-Purchase is a separate founder action: follow GitHub's
-[personal-plan upgrade instructions](https://docs.github.com/en/billing/how-tos/manage-plan-and-licenses/upgrade-plan),
-open profile **Settings -> Billing & Licensing -> Licensing -> Current plan ->
-Upgrade -> Upgrade to Pro** for the repository-owning personal account, review the
-displayed price/billing cycle and confirm only when ready. Keep LifeOS private.
-This does not purchase Supabase Pro or authorize an agent to change settings.
-
-After Pro is active and settings changes are explicitly authorized, use one classic
-rule as the simplest configuration:
-
-1. Repository **Settings -> Branches -> Add classic branch protection rule**.
-2. Set **Branch name pattern** to exactly `main`.
-3. Enable **Require a pull request before merging**. Leave **Require approvals**
-   unchecked (zero approvals), Code Owners and latest-push approval unchecked.
-4. Enable **Require status checks to pass before merging**, select the existing
-   **Foundation checks** check and require the branch to be up to date.
-5. Enable conversation resolution and **Do not allow bypassing the above settings**.
-6. Leave **Allow force pushes**, **Allow deletions**, and **Lock branch** unchecked.
-   Do not add deployment/merge-queue requirements or overlapping rules.
-7. Review and click **Create** only under the separate settings authorization.
-
-Read back the rule and check PR #19 shows the required check with no missing-review
-requirement. Record enforcement evidence; never test deletion/force push on main.
-Any disposable enforcement-test branch/rule needs its own authorized setup.
-Use squash when a merge is eventually approved; changing repository-wide merge
-options is separate. These steps follow the official
-[classic protection guide](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule).
+Confirm email/privacy disposition, publish the reviewed documentation safely,
+verify final-head CI and latest-main ancestry, configure/read back protection,
+then request final explicit merge authorization. Earlier conditional approval is
+not permission to merge. ADR-0005 implementation remains undecided and ADR-0006
+component gates remain binding. No Phase 1 implementation or deployment follows.

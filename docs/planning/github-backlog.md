@@ -1,6 +1,6 @@
 # GitHub backlog
 
-Updated 2026-10-10 in the verified private repository. One Phase 0 issue and
+Visibility update 2026-10-14: repository is public by founder choice. One Phase 0 issue and
 20 proposed Phase 1 issues remain open. Auth issues now gate official-SDK research,
 provider-session authorization and lifecycle instead of assuming a custom BFF;
 architecture acceptance and Phase 1 authorization are still pending. Execution

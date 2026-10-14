@@ -1,6 +1,6 @@
 # Phase 0 final approval checklist
 
-Updated 2026-10-13. Owner: founder/Product Owner. PR #19 remains draft and unmerged.
+Updated 2026-10-14. Owner: founder/Product Owner. PR #19 remains draft and unmerged.
 This checklist separates a documentation merge from implementation approval.
 
 ## Prepared for review
@@ -13,7 +13,7 @@ This checklist separates a documentation merge from implementation approval.
   architecture, web persistence/XSS and timeout policy remain undecided.
 - [x] Record ADR-0006 principle approval and component design/threat/test gates.
 - [x] Preserve universal Expo architecture and English application-facing copy.
-- [x] Document preferred GitHub Pro setup without making purchases/settings changes.
+- [x] Document public/GitHub Free setup without making settings changes.
 - [x] Maintain PROJECT_STATUS and distinguish executed checks from future tests.
 
 ## Repeat against the exact head immediately before merge
@@ -24,7 +24,9 @@ This checklist separates a documentation merge from implementation approval.
 - [ ] Founder accepts this Phase 0 documentation baseline, including Proposed
   ADRs 0001-0004 and the explicitly deferred ADR-0005/0006 implementation decisions.
   This does not convert proposals into accepted implementation choices.
-- [ ] Founder activates GitHub Pro or explicitly authorizes the purchase separately.
+- [x] Founder selected public repository; anonymous read confirms public visibility.
+- [ ] Resolve generated PR merge metadata privacy finding and confirm public
+  business-document scope; safely publish reviewed updates and verify fresh CI.
 - [ ] Founder separately authorizes/configures the exact main protection rule;
   read back required PRs/CI, no force/deletion, no bypass, zero mandatory approvals.
   Main is currently unprotected; the preferred governance is not yet fulfilled.

@@ -178,3 +178,36 @@ and HTTP 403 upgrade requirements for protection/rulesets. PR #19 remained draft
 and unmerged at baseline 54a1b56. New documentation commits must pass fresh CI;
 old runs do not validate them. No settings, subscriptions, deployment or Phase 1
 implementation changed. No application/native/RLS/storage/auth tests have run.
+
+## Public visibility review: 2026-10-14
+
+Anonymous access confirmed public visibility after the founder's change. Fresh
+public mirror inventory included main, foundation and both PR #19 refs: seven
+reachable commits, 130 unique historical blobs and 57 paths. Gitleaks 8.30.1
+reported zero secret findings (five content-bearing commits). Every blob received
+binary/personal-path/email/credential-filename checks with no content flags.
+All six branch commits use noreply addresses, but the GitHub-generated merge ref
+contains a personal author email. The value is not included in tracked evidence.
+This corrects the scope limitation of earlier branch-only identity checks.
+
+See [public review](public-repository-review.md) for exposure scope and limitations.
+Public product/business planning is identified for founder confirmation; no live
+customer records or confidential agreements were found. Issue/PR body pattern
+inspection had no personal path/email findings. No tags/releases, issue/review
+comments or Actions artifacts were returned; historical logs/caches/unreachable
+objects and external copies are not certified by this review.
+
+Main protected=false; classic protection returned 404 Branch not protected,
+rulesets and effective main rules were empty. Thus PR, required-check, strict,
+force/delete and admin-bypass enforcement could not be confirmed: they are absent.
+Foundation checks exists, source GitHub Actions app ID 15368, with two successful
+runs on published b4540e3. Latest main cdc1d64 is an ancestor, zero commits behind.
+Private vulnerability reporting is disabled. No settings mutation was performed.
+
+Local public-governance documentation checks passed: foundation validator,
+working whitespace, actionlint 1.7.12, three YAML files with unique-key and workflow
+assertions, 187 Planned/15-module assertions, and isolated validator mutations.
+Current working-tree inventory covered 58 text files without content flags.
+Publication is held to avoid regenerating exposed personal metadata until founder
+privacy handling is confirmed. No new remote CI is claimed for unpublished edits.
+Application/native/auth/RLS/storage checks remain unrun. PR remains draft/unmerged.

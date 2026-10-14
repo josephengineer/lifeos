@@ -17,3 +17,8 @@ added if the simple checker no longer meets repository needs.
 Consequences: current checks do not establish application/security correctness or
 full Markdown/YAML conformance. No open-source license is selected; founder must
 decide license and legal ownership before external contributions or distribution.
+
+Visibility update 2026-10-14: the founder made the repository public. This does not
+select a license; review public business-document scope and ownership explicitly.
+The original brief's private-repository instruction is preserved as historical
+source material and superseded by the founder's later visibility decision.

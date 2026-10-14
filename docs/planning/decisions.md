@@ -6,14 +6,14 @@ work while decisions are pending; stop only dependent implementation or operatio
 | ID | Decision | Recommended proposal | Needed before |
 | --- | --- | --- | --- |
 | D01 | Repository bootstrap | Approved and executed: empty main commit only, foundation branch push and draft PR; no merge approval | Completed bootstrap; PR review remains open |
-| D02 | License and rights holder | Keep private/no open-source grant; confirm proprietary notice and ownership | External contributions/distribution |
+| D02 | License and rights holder | Repository public by founder choice; no open-source license selected; confirm ownership and public business-document scope | External contributions/distribution |
 | D03 | Stack and architecture | ADRs 0001-0004 remain Proposed; ADR-0005 goals conditionally approved, final architecture pending; ADR-0006 principles approved with component gates | Accept documentation deferrals before Phase 0 merge; approve implementation scope separately |
 | D04 | Initial launch audience/regions | Individual adults first; choose jurisdictions and hosting region with privacy review | Provider provisioning/beta |
 | D05 | Hosting/jobs/OCR | Validate runtime limits and scanning options in a spike; approve costs separately | Phase 2 pipelines |
 | D06 | AI provider/data use | Opt-in scoped processing; approve provider, region, retention and terms | Any real data sent to AI |
 | D07 | Retention/deletion | Define trash, log, backup, conversation and deletion windows; legal review where needed | Personal-data beta |
 | D08 | Billing and store approach | Validate tiers/quotas/prices and current store rules before integrating | Billing implementation/activation |
-| D09 | GitHub protection/review | Founder prefers GitHub Pro and PR/CI/no-force/no-delete protection with zero mandatory approvals; purchase and settings authorization still withheld | Enable/verify approved protection before merge; no manual exception accepted |
+| D09 | GitHub protection/review | Founder selected public repository/GitHub Free; protection absent on 2026-10-14; configure required PR/CI/strict/no-force/no-delete/admin enforcement and zero approvals under separate authorization | Enable/verify approved protection before merge; no manual exception accepted |
 | D10 | Native signing/build spending | Founder-controlled accounts, isolated credentials, explicit build budget | EAS/native distribution |
 | D11 | Reliability targets | Agree reminder SLO, availability, RPO/RTO, upload caps and rate limits | Implementation acceptance/beta |
 | D12 | Brand/accessibility | Approve design direction; target accessible English-only launch | Shared UI components |

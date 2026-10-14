@@ -2,7 +2,7 @@
 
 ## Phase 0 (available now)
 
-Use Git and Python 3.11+. Clone the private repository after it is bootstrapped,
+Use Git and Python 3.11+. Clone the public repository,
 or use the existing checkout. No npm packages, cloud account or environment values
 are needed for documentation checks.
 

@@ -1,6 +1,6 @@
 # Phase 0 architecture, security and governance readiness
 
-Updated 2026-10-13 after founder decisions. Phase 0 remains In Review.
+Updated 2026-10-14 after public visibility review. Phase 0 remains In Review.
 [Draft PR #19](https://github.com/josephengineer/lifeos/pull/19) contains documentation
 and foundation tooling only. No Phase 1 work, deployment or publishing is authorized.
 
@@ -15,9 +15,11 @@ and foundation tooling only. No Phase 1 work, deployment or publishing is author
   provenance, server authorization and retention/deletion principles approved.
   Detailed component designs, threat models and test specifications must be
   finalized before coding; actual tests are required before verification.
-- GitHub: founder prefers Pro and protected main with PRs/CI/no force push or
-  deletion and zero mandatory external approvals. Purchase and settings changes
-  remain unauthorized. No manual-governance exception has been accepted.
+- GitHub: founder selected public source on GitHub Free; no Pro purchase needed.
+  Main protection is still absent. Required PR/CI/strict/no-force/no-delete/admin
+  controls need separate configuration authorization. No manual exception accepted.
+  Public review also found personal author metadata in the generated PR merge ref;
+  resolve privacy handling before publishing more updates.
 - ADRs 0001-0004 remain Proposed. Accepting the documentation with explicit deferrals
   is distinct from approving application implementation or selecting all policies.
 
@@ -44,7 +46,8 @@ Later detailed issues, code localization and runtime security evidence remain fu
 
 ## Remaining gates and risks
 
-- Before merge: current-head CI and founder review; preferred protection enabled
+- Before merge: public-content/privacy disposition, safely published updates,
+  current-head CI and founder review; required protection enabled
   and read back after separate authorization; explicit merge instruction.
 - Before Phase 1: separate research/scope approval. Before dependent auth coding:
   SDK evidence, accepted final architecture, web persistence/XSS and exact expiry

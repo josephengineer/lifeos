@@ -19,13 +19,14 @@ This bootstrap approval does not authorize a merge or Phase 1 implementation.
 ## Solo-founder protection recommendation
 
 The [governance report](github-governance.md) records the read-only inspection and
-exact recommended configuration. GitHub returned an upgrade requirement for both
-private branch protection and rulesets; main is currently unprotected. No settings
-were changed and the repository must remain private.
+exact recommended configuration. On 2026-10-14 the founder confirmed public
+visibility, verified by anonymous API access. GitHub Free supports protection,
+but main remains unprotected with no classic rule or ruleset. The earlier private
+entitlement denial is historical. No agent settings changes were made.
 
-The founder now prefers GitHub Pro and this protection configuration. Purchase
-and setting changes still need separate authorization; no manual exception is
-accepted. Follow the exact steps in the governance report after that authorization.
+Configure required PRs/CI and zero mandatory approvals only after separate settings
+authorization. No manual exception is accepted. Before another push, resolve the
+generated PR merge metadata finding in the public security review.
 
 If supported by the founder's chosen plan, require PRs and the observed
 `Foundation checks` status, require an up-to-date branch and resolved conversations,

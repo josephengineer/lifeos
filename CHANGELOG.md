@@ -13,3 +13,5 @@
 - Recorded founder conditional approvals, compared official Supabase SDK against
   gateway alternatives, removed the assumed custom-session implementation, and
   added a final approval checklist plus exact solo-founder protection instructions.
+- Reviewed the founder's public-repository transition: GitHub Free governance,
+  published-ref exposure evidence and unresolved privacy/protection blockers.

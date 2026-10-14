@@ -1,59 +1,62 @@
 # LifeOS project status
 
-Updated: 2026-10-13. Phase 0 is In Review; Phase 1 is not authorized.
+Updated: 2026-10-14. Phase 0 In Review, blocked from merge; Phase 1 not authorized.
 
 - Branch: `codex/phase-0-foundation`.
-- PR: [#19, open draft targeting main](https://github.com/josephengineer/lifeos/pull/19).
-- Last tested baseline before founder-decision update: `54a1b56368dbf1e3c9a42af33f95e2e77549f64c`.
+- PR: [#19, open draft](https://github.com/josephengineer/lifeos/pull/19).
+- Published head: `b4540e3167dc112d6f9412018579e169f6b2cadd`.
 - Main: empty bootstrap `cdc1d64cbf47c71b3af1573032cddb51f59c43dc`.
-- Repository: private; main protection unavailable on current entitlement.
+- Visibility: public, changed by founder and verified anonymously.
+- Governance: public protection available on GitHub Free, but main has no rule.
 
 ## Completed work
 
-Foundation documents/tooling exist; 187 capabilities across 15 modules remain
-Planned. Reviewed all 26 interrupted tracked changes and four new drafts without
-discarding work. Six findings have documented corrections and residual risks.
-Auth/session and ownership/provenance ADRs, governance and readiness reports are
-prepared. Twenty Phase 1 issue bodies match the local backlog; all remain Planned.
-This is preparation and review, not Phase 0 Done or application implementation.
-Founder decisions are now recorded; official SDK/BFF comparison, conditional
-component gates, exact Pro/protection steps and final approval checklist are ready.
-Existing Phase 1 issue titles/body sections and approval notes were synchronized;
-P1-18 is Research and no application work has started.
+Reviewed published refs/history through a fresh public mirror: seven reachable
+commits, 130 historical blobs, 57 file paths. Gitleaks found no secrets; content
+checks found no personal paths/email or customer documents. Metadata review found
+a personal email in GitHub's generated PR merge ref; value deliberately omitted.
+Product brief, roadmap and security design are public business material.
 
-## Pending decisions
+Updated local governance, public review, approval checklist, reporting policy and
+related documentation for the new visibility. Publication is held pending email
+privacy handling; these local updates are not yet part of PR #19. Prior published
+planning still has 187 capabilities and 20 Phase 1 issues, all application work Planned.
 
-ADR-0005 security objectives are conditionally approved, final architecture is not.
-Recommend official SDK first; native protected storage, web memory-only sessions,
-provider-session/account authorization and lifecycle evidence are pending gates.
-A custom session system requires a concrete unmet requirement and renewed approval.
-ADR-0006 principles are approved; component design/threat/test specifications must
-be finalized before coding. ADRs 0001-0004 remain Proposed.
-The founder prefers GitHub Pro plus protected main, but purchase/settings changes
-remain unauthorized and no manual exception was accepted. Project-board permission
-remains unavailable. D16 now gates SDK feasibility/recovery/cost research in a
-separately authorized Phase 1. Later privacy, retention, workers, licensing and
-billing decisions remain in the decision register.
+## Decisions and blockers
 
-## Validation and publication
+- ADR-0005 security objectives conditionally approved; implementation undecided
+  pending official-SDK assessment. No custom session system without concrete need
+  and renewed approval. Browser persistence/timeout choices remain open.
+- ADR-0006 principles approved with component design/threat/test gates before
+  coding and executed verification before completion. ADRs 0001-0004 Proposed.
+- Main protection absent: no required PR/check/strict/admin/force/delete safeguards.
+  Founder must configure or separately authorize the documented rule, then verify it.
+- Resolve generated-metadata privacy and confirm that public business-document
+  scope is intended. No personal email is copied into tracked documents.
+- Private vulnerability reporting is disabled; safe public reporting route and
+  license/ownership remain unresolved. No settings or subscription changes made.
+- Conditional merge approval is recorded, but final explicit authorization is
+  still required. Public visibility supersedes the earlier GitHub Pro prerequisite.
 
-Both runs on the pre-decision baseline `54a1b56` passed:
-[PR run](https://github.com/josephengineer/lifeos/actions/runs/38450731058) and
-[push run](https://github.com/josephengineer/lifeos/actions/runs/38450722202).
-The founder-decision update requires fresh CI. The PR description is the live
-publication record for its final head SHA/results; these prior runs do not validate it.
-Local foundation/YAML/actionlint/whitespace/mutation and sensitive-content checks
-passed, with zero Gitleaks findings. Full evidence is recorded in
-[verification](docs/engineering/verification.md) and the PR description. Application,
-RLS/session/storage tests and native builds have not run.
+## Validation evidence
+
+Published b4540e3 contains latest main (zero commits behind). Both existing runs
+passed: [PR](https://github.com/josephengineer/lifeos/actions/runs/38453001615) and
+[push](https://github.com/josephengineer/lifeos/actions/runs/38452990109).
+Foundation checks is emitted by GitHub Actions but not required by protection.
+Those results do not verify the unpublished documentation update. Local check
+evidence is recorded in [verification](docs/engineering/verification.md).
+No application/native/auth/RLS/storage/restore tests have run.
 
 ## Next action
 
-Review the [final approval checklist](docs/engineering/phase-0-approval-checklist.md),
-activate and separately authorize/configure preferred protection, then give explicit
-merge approval after current-head CI. Auth implementation decisions may remain gated
-in the documentation baseline. Do not merge, change settings,
-deploy, publish a product or start Phase 1 without separate authorization.
+Founder addresses email privacy and public-content disposition and configures or
+authorizes protection; then resume safe publication of the reviewed updates.
+Reinspect generated metadata, exact rule settings, latest-main ancestry and fresh
+CI. Request final explicit merge approval only with blockers clearly resolved.
+No merge, Phase 1 implementation or deployment without separate approval.
 
-Update this record in future development tasks. Record tested commit IDs and CI
-links as dated evidence; never label an earlier run as validation of a later head.
+References: [public review](docs/engineering/public-repository-review.md),
+[governance/setup](docs/engineering/github-governance.md),
+[approval checklist](docs/engineering/phase-0-approval-checklist.md).
+Update this record in future development tasks; never attribute older CI to a new head.

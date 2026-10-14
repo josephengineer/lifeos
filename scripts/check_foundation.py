@@ -33,6 +33,7 @@ REQUIRED = [
     'docs/engineering/foundation-review.md',
     'docs/engineering/github-governance.md', 'docs/engineering/phase-0-readiness.md',
     'docs/engineering/phase-0-approval-checklist.md',
+    'docs/engineering/public-repository-review.md',
     'docs/adr/README.md', 'docs/adr/0001-modular-monolith.md',
     'docs/adr/0002-isolation.md', 'docs/adr/0003-ai-and-actions.md',
     'docs/adr/0004-foundation-tooling.md', 'scripts/check_foundation.py',
