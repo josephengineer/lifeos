@@ -5,7 +5,10 @@ Production Phase 1 implementation is not authorized.
 
 ## Repository state
 
-- Research branch: `codex/p1-01-toolchain-research`; research PR to be opened.
+- Research branch: `codex/p1-01-toolchain-research`;
+  [draft PR #25](https://github.com/josephengineer/lifeos/pull/25), not authorized to merge.
+  Exact final-head Foundation results are recorded on that PR; they validate docs,
+  not the disposable dependency audit. Issue #2 remains open/In Review.
 - PR #24 authorized and squash-merged from 721dc7122b3015c574458136392ae75227d60f46.
 - Main: `a8f0a9b9d0b08470267707f09e76c7e70dcf9b9d`; tree matches approved PR #24.
 - [Post-merge Foundation run](https://github.com/josephengineer/lifeos/actions/runs/38610414175)
