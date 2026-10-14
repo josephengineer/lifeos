@@ -263,3 +263,14 @@ Gitleaks 8.30.1 found no leaks in the reviewed-tree snapshot or foundation branc
 history (six content-bearing commits). This is not proof of absence of all secrets.
 New-head CI and regenerated merge metadata must be checked after push; old CI does
 not validate this update. No application tests, deployment or merge occurred.
+
+## Publication evidence: 2026-10-14
+
+Commits f619a5e and aa46a8a were pushed normally to codex/phase-0-foundation after
+both author/committer addresses were checked against the configured noreply.
+Foundation runs 38567797694 (PR) and 38567791292 (push) passed on aa46a8a.
+Regenerated merge 24bfa7cca3c549cf0d036816674870508a1c33cd has noreply metadata;
+old 070b72ac3355813c2de9d30998e993ed6cd446db remains anonymously retrievable.
+PR body updated for public/Free governance, capability/issue scope, architecture
+gates and bounded privacy evidence. Final evidence-commit CI will be recorded in
+PR #19; preceding success is not attributed to the later revision.

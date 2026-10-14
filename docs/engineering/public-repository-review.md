@@ -143,3 +143,13 @@ authorized committing and pushing reviewed documentation to the existing Phase 0
 branch, preserving history. This lifts the publication hold; it does not authorize
 merge or assert that the historical exposed object has been erased. Reinspect the
 new generated merge ref and CI after publication. No application work is authorized.
+
+## Published review results: 2026-10-14
+
+Published f619a5e and aa46a8a normally after founder authorization. Both Actions
+runs on aa46a8a passed. Regenerated merge object
+24bfa7cca3c549cf0d036816674870508a1c33cd uses noreply author and committer metadata.
+The historical object 070b72ac3355813c2de9d30998e993ed6cd446db still returns anonymous
+HTTP 200 with personal author metadata. No erasure claim is made. Current branch
+history is clean; preserve it. Final merge approval must consider this disclosed
+residual exposure. This evidence update needs its own final-head checks.
