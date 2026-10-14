@@ -19,6 +19,9 @@ Phase 4 research includes prices/tier limits, store subscription policy and paym
 provider feasibility. Commercial activation is blocked until founder approval.
 Advanced business/enterprise integrations may need separate later gates.
 
+Phase 0 documentation/tooling completed on 2026-10-14 through PR #19 and verified
+main CI. Phase 1 remains Planned; see the [implementation proposal](phase-1-proposal.md).
+
 ## Priorities
 
 P0 Critical is an urgent security/reliability or release blocker; P1 High is core

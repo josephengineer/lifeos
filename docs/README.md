@@ -45,6 +45,8 @@ from pending GitHub and product work.
 - [Current project status](../PROJECT_STATUS.md)
 - [Public repository security review](engineering/public-repository-review.md)
 
+- [Proposed Phase 1 implementation sequence](planning/phase-1-proposal.md)
+
 ## Status vocabulary
 
 | Status | Evidence required |

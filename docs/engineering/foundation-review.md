@@ -1,6 +1,6 @@
 # Foundation findings and current disposition
 
-Updated 2026-10-13 for [draft PR #19](https://github.com/josephengineer/lifeos/pull/19).
+Updated 2026-10-14 after [merged PR #19](https://github.com/josephengineer/lifeos/pull/19).
 This is the implementing agent's review, not independent human approval. P1 means
 high-priority security/design risk; P2 means a documentation/tooling defect. A
 corrected requirement is not an implemented or tested application control.
@@ -11,7 +11,7 @@ corrected requirement is not an implemented or tested application control.
 | R02: workspace-key rule conflicted with account records | P2 | Separate account records, explicit owner_user_id and matching personal owner membership; workspace-owned documents use created_by attribution | Principles approved under ADR-0006; detailed design gates, ADR-0002 and actual FK/RLS/ownership tests pending |
 | R03: quarantine allowed an unspecified post-scan replacement path | P1 | Seal bytes before scan, preserve immutable originals, separate derivatives, deny client/worker original writes; add hashes and race/provenance tests | ADR-0006 principles approved; component design/threat/test gates and Phase 2 verification pending; privileged operator risk remains |
 | R04: CI whitespace command inspected no committed changes | P2 | First-parent committed diff with fetch-depth 2; synthetic bad feature/merge commits detected | Tooling resolved and remotely passed on the preceding reviewed head; recheck current head after updates |
-| R05: stale verification text and incomplete Project resolution | P2 | Record empty bootstrap, draft PR and check evidence; document manual Projects setup and protection entitlement denial | Historical documentation fixed; public main protection now exists; requested settings verified; privacy/publication gate remains; Projects permission remains unresolved |
+| R05: stale verification text and incomplete Project resolution | P2 | Record empty bootstrap, draft PR and check evidence; document manual Projects setup and protection entitlement denial | Historical documentation fixed; public main protection now exists; requested settings verified; founder accepted historical email exposure; Projects permission remains unresolved |
 | R06: logout could imply immediate JWT invalidation | P1 | ADR-0005 now compares official SDK with BFF alternatives and recommends provider-session/account gates without a duplicate issuer | Security objectives conditionally approved; web storage/timeout/final architecture and runtime evidence pending; issued JWTs/in-flight data cannot be recalled |
 
 References: [ADR index](../adr/README.md),
@@ -38,10 +38,10 @@ References: [ADR index](../adr/README.md),
 
 Accept or amend the proposed ADRs before treating their designs as settled.
 Auth storage/timeout choices, scanner/worker limits, privacy/retention, operational
-targets and billing/store feasibility remain phase-gated decisions. Public GitHub Free supports protection, but the current absence of rules
-leaves branch safety unenforced; see public-repository-review.md. No compliance,
+targets and billing/store feasibility remain phase-gated decisions. Public GitHub Free main protection is configured and verified; the founder accepted
+the historical email exposure described in public-repository-review.md. No compliance,
 production security, native build or implemented feature claim is made.
 
 The final [readiness report](phase-0-readiness.md) states merge conditions and the
-approval request. Keep this PR unmerged and Phase 1 unstarted until explicitly
-authorized. No board/protection setting change follows automatically from review.
+approval request. PR #19 was explicitly authorized and merged; Phase 1 remains unstarted pending
+separate authorization. No board/protection setting change follows automatically from review.
