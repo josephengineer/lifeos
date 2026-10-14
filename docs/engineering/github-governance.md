@@ -14,26 +14,35 @@ tenant isolation requirements are unchanged by public source visibility.
 | Read-only evidence | Result |
 | --- | --- |
 | Anonymous repository API | visibility=public, private=false; source readable without credentials |
-| Default main | Empty bootstrap cdc1d64; protected=false |
-| Classic main protection endpoint | HTTP 404: Branch not protected |
-| Repository rulesets | Empty list |
-| Effective rules for main | Empty list |
-| Required PR / current CI / up-to-date enforcement | Not configured |
-| Force-push / deletion / admin-bypass prevention | Not enforced by branch protection |
-| Mandatory external reviews | No protection review requirement; does not compensate for missing PR rule |
-| Emitted CI job | Foundation checks, GitHub Actions app ID 15368; passing on published b4540e3 |
-| Private vulnerability reporting | Disabled; no setting change authorized |
+| Default main | Empty bootstrap cdc1d64; protected=true |
+| Classic main protection endpoint | Active rule returned for main |
+| Repository rulesets / effective main rulesets | Empty lists; classic protection applies |
+| Required PR | Enabled |
+| Required CI | Foundation checks, GitHub Actions app ID 15368; matches emitted job |
+| Up-to-date enforcement | strict=true |
+| Administrator enforcement | enforce_admins.enabled=true; no bypass allowances returned |
+| Force pushes / deletion | Both disabled |
+| Mandatory approvals | 0; matches solo-founder policy; Code Owners and last-push approval off |
+| Signed commits | Disabled by founder; existing unsigned heads are permitted by this setting |
+| Conversation resolution | Required |
+| Published CI | Two successful Foundation checks runs on b4540e3 |
+| Private vulnerability reporting | Disabled at public audit; no setting change authorized |
 
-**Merge blocker:** visibility alone does not configure protection. Successful CI
-is informational until the check is required. No destructive push/delete or
-unauthorized merge probe was attempted; missing settings already establish that
-the requested protections are absent. No claim of enforced protection is made.
+The subsequent founder configuration change resolves the approval/signing
+mismatches: zero required approvals, signatures disabled. All requested protection
+settings now match. Privacy/publication review and final explicit merge approval
+remain outstanding. PR #19 is still draft, with API merge state clean.
+
+This is configuration readback, not a destructive enforcement test. No direct
+push, force push, deletion or unauthorized merge probe was attempted. Initial
+absence of protection in the public review is historical; this readback follows
+the founder's configuration change.
 
 ## Exact setup for the founder
 
 No plan upgrade is needed. After separate authorization to change settings:
 
-1. Open repository Settings -> Branches -> Add classic branch protection rule.
+1. Open repository Settings -> Branches -> Edit the existing main protection rule.
 2. Target exactly `main`; enable Require a pull request before merging.
 3. Leave Require approvals unchecked: zero mandatory approvals. Leave Code Owners,
    stale-approval and most-recent-push approval requirements off.
@@ -41,7 +50,8 @@ No plan upgrade is needed. After separate authorization to change settings:
    GitHub Actions where available. Require branches to be up to date.
 5. Require conversation resolution; enable Do not allow bypassing the above settings.
 6. Leave Allow force pushes, Allow deletions and Lock branch unchecked.
-7. Save, then read back the main rule. Avoid conflicting overlapping rules.
+7. Leave Require signed commits disabled under the current founder decision.
+8. Save, then read back the main rule. Avoid conflicting overlapping rules.
 
 Expected readback: PR rule present, approval count 0, status context Foundation
 checks (app ID 15368 where specified), strict=true, enforce_admins.enabled=true,
@@ -76,7 +86,7 @@ repository does not require making the planning board public.
 ## Merge conditions
 
 Confirm email/privacy disposition, publish the reviewed documentation safely,
-verify final-head CI and latest-main ancestry, configure/read back protection,
+verify final-head CI and latest-main ancestry, recheck protection,
 then request final explicit merge authorization. Earlier conditional approval is
 not permission to merge. ADR-0005 implementation remains undecided and ADR-0006
 component gates remain binding. No Phase 1 implementation or deployment follows.

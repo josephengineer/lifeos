@@ -21,12 +21,14 @@ This bootstrap approval does not authorize a merge or Phase 1 implementation.
 The [governance report](github-governance.md) records the read-only inspection and
 exact recommended configuration. On 2026-10-14 the founder confirmed public
 visibility, verified by anonymous API access. GitHub Free supports protection,
-but main remains unprotected with no classic rule or ruleset. The earlier private
+and main now has classic protection with zero mandatory approvals and required
+signatures disabled, verified through GitHub. The earlier private
 entitlement denial is historical. No agent settings changes were made.
 
-Configure required PRs/CI and zero mandatory approvals only after separate settings
-authorization. No manual exception is accepted. Before another push, resolve the
-generated PR merge metadata finding in the public security review.
+Required PRs/CI, strict branches and admin enforcement are configured; force pushes
+and deletion are disabled. The agent made no settings changes. No manual exception is accepted. The founder confirmed account email privacy and
+authorized the reviewed documentation push. Inspect regenerated PR metadata after
+pushing; old object retention remains disclosed in the public security review.
 
 If supported by the founder's chosen plan, require PRs and the observed
 `Foundation checks` status, require an up-to-date branch and resolved conversations,

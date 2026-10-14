@@ -27,9 +27,9 @@ This checklist separates a documentation merge from implementation approval.
 - [x] Founder selected public repository; anonymous read confirms public visibility.
 - [ ] Resolve generated PR merge metadata privacy finding and confirm public
   business-document scope; safely publish reviewed updates and verify fresh CI.
-- [ ] Founder separately authorizes/configures the exact main protection rule;
+- [x] Founder corrected main protection approval count and disabled required signatures;
   read back required PRs/CI, no force/deletion, no bypass, zero mandatory approvals.
-  Main is currently unprotected; the preferred governance is not yet fulfilled.
+  API confirms main protected, zero required approvals and required signatures disabled.
 - [ ] Founder gives an explicit merge instruction for PR #19 once those gates pass.
 
 The manual Phase 0 exception remains an unselected alternative, not implicit

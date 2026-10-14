@@ -13,7 +13,7 @@ work while decisions are pending; stop only dependent implementation or operatio
 | D06 | AI provider/data use | Opt-in scoped processing; approve provider, region, retention and terms | Any real data sent to AI |
 | D07 | Retention/deletion | Define trash, log, backup, conversation and deletion windows; legal review where needed | Personal-data beta |
 | D08 | Billing and store approach | Validate tiers/quotas/prices and current store rules before integrating | Billing implementation/activation |
-| D09 | GitHub protection/review | Founder selected public repository/GitHub Free; protection absent on 2026-10-14; configure required PR/CI/strict/no-force/no-delete/admin enforcement and zero approvals under separate authorization | Enable/verify approved protection before merge; no manual exception accepted |
+| D09 | GitHub protection/review | Founder selected public repository/GitHub Free; protection active on 2026-10-14 with required PR/CI/strict/no-force/no-delete/admin enforcement; zero approvals and signatures disabled verified by subsequent API readback | Enable/verify approved protection before merge; no manual exception accepted |
 | D10 | Native signing/build spending | Founder-controlled accounts, isolated credentials, explicit build budget | EAS/native distribution |
 | D11 | Reliability targets | Agree reminder SLO, availability, RPO/RTO, upload caps and rate limits | Implementation acceptance/beta |
 | D12 | Brand/accessibility | Approve design direction; target accessible English-only launch | Shared UI components |

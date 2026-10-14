@@ -43,7 +43,7 @@ lint, type checking, tests and builds will be introduced with the application.
 ## Repository and licensing
 
 The founder made [this repository](https://github.com/josephengineer/lifeos) public.
-GitHub Free supports the intended protection, but main is not yet protected; see
+GitHub Free supports the intended protection, but privacy/publication review remains open; see
 [public review](docs/engineering/public-repository-review.md).
 No open-source license is granted. Licensing and ownership notices await founder
 confirmation; see [decisions](docs/planning/decisions.md). Do not upload secrets,

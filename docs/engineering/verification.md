@@ -211,3 +211,55 @@ Current working-tree inventory covered 58 text files without content flags.
 Publication is held to avoid regenerating exposed personal metadata until founder
 privacy handling is confirmed. No new remote CI is claimed for unpublished edits.
 Application/native/auth/RLS/storage checks remain unrun. PR remains draft/unmerged.
+
+## Main protection follow-up: 2026-10-14
+
+Read-only main protection API now returns an active classic rule: required PRs,
+Foundation checks bound to GitHub Actions app 15368, strict=true,
+enforce_admins=true, force pushes/deletion disabled. No bypass allowances were
+returned and no rulesets apply. Required approvals=1 conflicts with the requested
+zero; required signatures=true is an additional gate for unsigned heads.
+Conversation resolution is required. No destructive enforcement probe was run.
+Published b4540e3 still has two successful Foundation checks runs; PR #19 remains
+open, draft and blocked. Main remains cdc1d64. No fresh CI for unpublished work.
+
+Pending f619a5e author and committer both match the configured GitHub noreply
+address. Local signature status N and remote head verification reason unsigned
+were inspected. Existing synthetic PR merge ref still contains personal author
+metadata; its value is omitted. Publication remains held for privacy handling.
+
+The first follow-up foundation check detected CRLF introduced by the editor;
+changed files were normalized back to LF. The rerun of
+`python scripts/check_foundation.py` passed; `git diff --check` also passed.
+No workflow files changed; YAML/actionlint and secret scans were not rerun in
+this protection-only follow-up (earlier audit results are recorded above).
+No settings, push, merge, Phase 1 work or deployment occurred.
+
+## Subsequent founder correction and privacy verification: 2026-10-14
+
+API readback confirms approval count 0 and signatures disabled; required PRs,
+Foundation checks/app 15368, strict branches, admin enforcement and force/delete
+restrictions remain configured. Both published-head checks pass; PR is draft,
+unmerged, API merge state clean. No enforcement mutation was attempted.
+Fresh anonymous mirror exact-email scan: 7 commits, 44 trees, 130 blobs; only
+070b72ac3355813c2de9d30998e993ed6cd446db author metadata matches, contained only
+by refs/pull/19/merge. Six published branch commits use noreply author/committer.
+Two known local backup email-bearing commits returned anonymous HTTP 404 by SHA.
+Pending f619a5e author/committer noreply verified. See public review for limitations.
+Foundation validator and git diff --check passed after documentation updates.
+No new general secret scan, workflow validation or runtime tests were executed;
+this review specifically inspected exact-email exposure and protection settings.
+All existing uncommitted work was retained; no commit or push occurred.
+
+## Authorized publication preflight: 2026-10-14
+
+Reviewed all eleven modified tracked files, preserving the interrupted work and
+chronological evidence. Founder confirmed account email privacy and authorized
+publication only. Foundation validator, git diff --check, actionlint 1.7.12,
+three YAML files with duplicate-key/workflow assertions, 187 Planned capabilities
+across 15 modules, and isolated validator mutation probes passed. The 58-file
+sensitive-content inventory found no personal paths/email or credential files.
+Gitleaks 8.30.1 found no leaks in the reviewed-tree snapshot or foundation branch
+history (six content-bearing commits). This is not proof of absence of all secrets.
+New-head CI and regenerated merge metadata must be checked after push; old CI does
+not validate this update. No application tests, deployment or merge occurred.

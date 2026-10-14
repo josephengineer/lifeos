@@ -47,8 +47,8 @@ Later detailed issues, code localization and runtime security evidence remain fu
 ## Remaining gates and risks
 
 - Before merge: public-content/privacy disposition, safely published updates,
-  current-head CI and founder review; required protection enabled
-  and read back after separate authorization; explicit merge instruction.
+  current-head CI and founder review; active protection now verified with zero mandatory approvals
+  and signatures disabled; recheck before merge; explicit merge instruction.
 - Before Phase 1: separate research/scope approval. Before dependent auth coding:
   SDK evidence, accepted final architecture, web persistence/XSS and exact expiry
   policy; provider-session helper, reset/fresh-auth and recovery designs.
