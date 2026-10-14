@@ -1,6 +1,7 @@
 # Ordered Phase 1 backlog
 
-Status: Planned. Execute only after founder approval of Phase 1 scope and ADRs.
+Status: P1-01 research authorized and In Review; other implementation remains Planned.
+Execute only after founder approval of the relevant scope and ADRs.
 Each item is a separate small issue/PR; split again if implementation grows.
 There are 20 proposed work items. IDs are stable: newly scoped P1-18 through
 P1-20 appear before P1-10 as auth design/authorization/lifecycle gates. A custom
@@ -28,6 +29,9 @@ Dependencies: approved ADR-0001 and D03/D10 decisions as relevant.
 Tests: disposable synthetic scaffold web export and supported platform smoke;
 record unavailable native runs without asserting success.
 Security/privacy: review dependency provenance and server/client secret boundaries.
+
+Research evidence: [P1-01 report](../research/p1-01-toolchain.md). Toolchain lint
+and audit blockers remain; no scaffold approval is implied.
 
 ## P1-02: Create the minimal Expo workspace and lockfile
 

@@ -298,3 +298,29 @@ actionlint, three YAML unique-key/workflow checks, isolated validator probes,
 187 Planned/15-module assertions and 59-file sensitive-content inventory.
 Gitleaks reviewed-tree scan found no leaks. These are documentation/tooling checks;
 no Phase 1 prototype or application test was executed.
+
+## PR #24 merge and P1-01 research: 2026-10-14
+
+Confirmed PR #24 exact head 721dc7122b3015c574458136392ae75227d60f46, main target,
+nine documentation paths, passing required Foundation checks and unchanged main
+protection. No new critical documentation-security finding identified. Marked ready
+and squash-merged normally as a8f0a9b9d0b08470267707f09e76c7e70dcf9b9d; main tree
+matches the approved head. Post-merge push run 38610414175 passed.
+
+Founder separately authorized P1-01 research. Dedicated branch contains only
+research/planning/ADR/status evidence; disposable template and dependencies stay
+outside the checkout. Official sources/publisher manifests checked on 2026-10-14.
+Node archive SHA256 verified, clean npm ci with scripts disabled, generated-env
+typecheck, web export, Android/iOS JS exports, Expo Doctor 21/21 and one synthetic
+Jest/RNTL accessibility-role test passed. Initial type/lint failures and current
+ESLint incompatibility/deprecation are explicitly recorded. No native binary or
+live Supabase/security/restore/performance test ran. Final disposable npm audit
+failed with 48 high and 16 moderate affected entries, zero critical; this is an
+implementation-adoption gate, not a passing audit. No force audit fix used.
+See the research report and evidence JSON for exact versions and advisory URLs.
+
+Research-documentation checks passed: foundation validator, git diff --check,
+actionlint, three YAML unique-key/workflow checks, validator mutation probes,
+187 Planned/15-module assertions and 61-file sensitive-content inventory.
+Gitleaks research-document snapshot found no secrets. These passing checks do not
+change the failing disposable dependency audit or missing native/auth evidence.
