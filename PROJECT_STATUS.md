@@ -1,66 +1,65 @@
 # LifeOS project status
 
-Updated: 2026-10-14. Phase 0 In Review, awaiting final merge authorization.
-Phase 1 implementation is not authorized.
+Updated: 2026-10-14. Phase 0 documentation/tooling foundation Complete.
+Phase 1 remains Planned and is not authorized for implementation.
 
-- Branch: `codex/phase-0-foundation`.
-- PR: [#19, open draft](https://github.com/josephengineer/lifeos/pull/19).
-- Published reviewed documentation: `aa46a8a7d15fdb3474a6dfc4ee29d1fe2e91701a`.
-- This follow-up evidence commit records that revision's results. Its own CI is
-  pending at authoring; final head/results are maintained in PR #19 after push.
-- Main: empty bootstrap `cdc1d64cbf47c71b3af1573032cddb51f59c43dc`.
-- Repository public by founder choice; main protection verified on GitHub Free.
+## Branch, merge and evidence
 
-## Completed work and evidence
+- Completion/proposal branch: `codex/phase-0-completion-proposal`.
+- [Foundation PR #19](https://github.com/josephengineer/lifeos/pull/19) merged by
+  authorized squash from approved head bfd94ab589c889307a5be66bdcc40ef6b52275fc.
+- Resulting main commit: `2196939194fcd8739186be0d64dca7400d3dfc2e`.
+- Main tree exactly matches the approved head; squash has one parent. Main's
+  author/committer use noreply metadata. No protection bypass or direct main push.
+- [Post-merge Foundation checks](https://github.com/josephengineer/lifeos/actions/runs/38568634681)
+  passed on that main commit. Separate Dependabot run 38568659651 also succeeded;
+  it is not the required Foundation check.
+- [Issue #1](https://github.com/josephengineer/lifeos/issues/1) closed after merge.
+- This branch proposes the completion record and detailed Phase 1 scope through
+  [draft PR #24](https://github.com/josephengineer/lifeos/pull/24); its merge needs
+  separate founder authorization. Final-head CI evidence is recorded on that PR.
 
-Preserved and reviewed all eleven modified tracked files. Published f619a5e and
-aa46a8a normally to the feature branch; author/committer metadata verified as
-GitHub noreply. No history rewrite, main push or settings change occurred.
-Foundation validation, whitespace, three YAML files, actionlint, 187 Planned
-capabilities across 15 modules, validator mutation probes and 58-file sensitive
-content inventory passed. Gitleaks found no secrets in reviewed files/history.
+## Completed scope
 
-Both runs on aa46a8a passed:
-[PR](https://github.com/josephengineer/lifeos/actions/runs/38567797694) and
-[push](https://github.com/josephengineer/lifeos/actions/runs/38567791292).
-These runs do not validate this later evidence commit. No application/native,
-auth/RLS/storage, SDK feasibility or restore tests have run.
+Phase 0 contains documentation and engineering tooling only: PRD, 187 capabilities
+across 15 modules, architecture/security proposals, roadmap, twenty existing
+Phase 1 issues, repository standards and executable documentation CI. All
+application capabilities remain Planned; none are implemented or released.
+Final PR #19 Foundation runs 38567995652 and 38567984843 passed. Documentation,
+YAML, actionlint, whitespace, negative validator probes and bounded secret/content
+scans passed as recorded in verification. No application/native/auth/RLS/storage,
+SDK feasibility or restore tests have run.
 
-Main protection requires PRs, Foundation checks from Actions app 15368, strict
-up-to-date branches and admin enforcement. Force pushes/deletion are disabled,
-approval count is zero, signatures disabled and conversation resolution required.
+Main is public by founder choice with required PRs, Foundation checks/app 15368,
+strict up-to-date branches, admin enforcement, no force pushes/deletion, zero
+required approvals, signatures disabled and conversation resolution required.
+No visibility, protection, billing or other settings were changed by the agent.
 
-## Privacy disposition
+## Accepted residual risk and pending decisions
 
-Founder confirmed account email privacy and explicitly authorized documentation
-publication. Generated merge object 24bfa7cca3c549cf0d036816674870508a1c33cd now
-uses noreply author/committer metadata. Historical generated merge object
-070b72ac3355813c2de9d30998e993ed6cd446db remains anonymously retrievable with personal
-author metadata; its value is omitted. It is outside both published branch
-histories. Regeneration does not erase retained objects, caches or external copies.
-Preserve clean branch history; Support assessment is available if removal is
-required, but no deletion is guaranteed. Reinspect the final generated merge ref.
+Founder explicitly accepted historical personal-email exposure in generated object
+070b72ac3355813c2de9d30998e993ed6cd446db and authorized merge without rewriting
+published history. Current reachable pre-merge refs used noreply metadata; retained
+objects/caches/external copies are not erased. No raw personal email is recorded.
+No unresolved critical security finding was identified in the documentation scope;
+this does not establish application security.
 
-## Pending decisions and follow-ups
-
-- Final explicit merge approval is required; PR remains draft and unmerged.
-- ADR-0005 security objectives conditionally approved; implementation undecided
-  pending official SDK feasibility. No custom session system without demonstrated
-  need and renewed approval; browser persistence/timeout policy remains open.
-- ADR-0006 principles approved; component design, threat model and test gates
-  remain required before implementation. ADRs 0001-0004 remain Proposed.
-- Private vulnerability reporting/contact, licensing/ownership and Projects
-  permission remain unresolved follow-ups; no permission bypass attempted.
-- All 187 capabilities remain Planned; launch application copy remains English.
+ADR-0005 security objectives are conditionally approved; final implementation
+architecture remains undecided pending official Supabase SDK feasibility. No custom
+session system without demonstrated need and renewed approval. ADR-0006 principles
+are approved; component schema/threat/test gates remain mandatory. ADRs 0001-0004
+remain Proposed. Private reporting/contact, licensing/ownership, Projects permission,
+build/signing costs and later operational/provider decisions remain follow-ups.
 
 ## Next action
 
-Push this evidence update to the same feature branch, verify its fresh required
-CI and regenerated merge metadata, update PR #19 with exact final evidence, and
-request final explicit merge authorization while disclosing old-object retention.
-Do not merge, start Phase 1 or deploy without separate authorization.
+Review the [detailed Phase 1 proposal](docs/planning/phase-1-proposal.md) and this
+completion-record PR. Recommended first task is P1-01 research (#2), only after
+separate explicit approval and resolution of its prerequisites. All twenty issues
+remain open and Planned; no scaffold or SDK prototype was created in this task.
+Do not begin Phase 1, deploy or publish the application without separate approval.
 
-References: [public review](docs/engineering/public-repository-review.md),
-[governance](docs/engineering/github-governance.md),
-[verification](docs/engineering/verification.md),
-[approval checklist](docs/engineering/phase-0-approval-checklist.md).
+References: [verification](docs/engineering/verification.md),
+[Phase 0 completion](docs/planning/phase-0-issue.md),
+[foundation review](docs/engineering/foundation-review.md),
+[public privacy review](docs/engineering/public-repository-review.md).

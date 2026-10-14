@@ -47,3 +47,11 @@ does not block this documentation PR; manual private-board steps are available.
 
 References: [readiness](phase-0-readiness.md), [governance/setup](github-governance.md),
 [verification](verification.md), [decision register](../planning/decisions.md).
+
+## Completion disposition: 2026-10-14
+
+The historical pre-merge checklist above records the staged approval process.
+Founder explicitly authorized the exact bfd94ab head and accepted retained-email
+risk without history rewrite. PR #19 was marked ready and squash-merged; main
+2196939 matches the approved tree and post-merge Foundation run 38568634681 passed.
+Issue #1 is closed. Phase 1 scope/research approval is still outstanding.

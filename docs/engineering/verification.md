@@ -274,3 +274,27 @@ old 070b72ac3355813c2de9d30998e993ed6cd446db remains anonymously retrievable.
 PR body updated for public/Free governance, capability/issue scope, architecture
 gates and bounded privacy evidence. Final evidence-commit CI will be recorded in
 PR #19; preceding success is not attributed to the later revision.
+
+## Approved Phase 0 merge: 2026-10-14
+
+Readback verified PR #19 targeting main at exact approved bfd94ab head, 58 Phase 0
+documentation/configuration/tooling paths, both required Foundation checks passed,
+zero unresolved review threads, squash enabled and all requested main protections.
+No unresolved critical security finding was identified in this documentation scope;
+application security is unverified. Founder explicitly accepted retained-email risk.
+Marked ready using GitHub GraphQL, then squash-merged through the normal REST merge
+endpoint with the exact expected head SHA. No bypass parameter or settings change.
+
+Result: 2196939194fcd8739186be0d64dca7400d3dfc2e, one parent; git diff between main
+and approved bfd94ab returned no differences. Main author/committer noreply verified.
+Post-merge push Foundation run 38568634681 and its Foundation checks job succeeded.
+Dynamic Dependabot run 38568659651 succeeded separately. Issue #1 closed on merge.
+A new branch codex/phase-0-completion-proposal holds the completion record and
+Phase 1 proposal; its separate PR is not authorized to merge. No Phase 1 code,
+deployment, application publication or history rewrite occurred.
+
+Completion/proposal local checks passed: foundation validator, whitespace,
+actionlint, three YAML unique-key/workflow checks, isolated validator probes,
+187 Planned/15-module assertions and 59-file sensitive-content inventory.
+Gitleaks reviewed-tree scan found no leaks. These are documentation/tooling checks;
+no Phase 1 prototype or application test was executed.

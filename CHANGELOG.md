@@ -15,3 +15,5 @@
   added a final approval checklist plus exact solo-founder protection instructions.
 - Reviewed the founder's public-repository transition: GitHub Free governance,
   published-ref exposure evidence and unresolved privacy/protection blockers.
+- Completed the approved Phase 0 documentation squash merge and verified main CI;
+  prepared a separate Phase 1 proposal without starting implementation.
