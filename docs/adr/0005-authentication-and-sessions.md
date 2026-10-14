@@ -6,8 +6,8 @@ implementation architecture not approved.**
 Founder decision: compare the custom gateway with official Supabase approaches
 and choose the simplest design meeting LifeOS requirements. A custom session
 system needs concrete evidence of necessity. This revision replaces the earlier
-all-platform BFF recommendation, preserved in Git history. No Phase 1 work,
-hosting purchase or implementation is authorized.
+all-platform BFF recommendation, preserved in Git history. P1-01 research is separately authorized; production implementation and hosting
+purchases remain unauthorized.
 
 ## Recommendation and approved objectives
 
@@ -175,3 +175,24 @@ needs an additional demonstrated cross-platform requirement.
 
 Storage choices, the authorization helper and implementation gates are LifeOS
 recommendations derived from these sources, not guarantees supplied by providers.
+
+## P1-01 official SDK comparison update: 2026-10-14
+
+Implementation architecture remains undecided. Official Supabase JS 2.117.3 and
+Expo SecureStore 57.0.4 are current candidates, not runtime-verified auth pins.
+Official quickstart SQLite/AsyncStorage persistence is not sufficient evidence for
+LifeOS protected native storage. Compare full session payload/error/atomicity and
+backup/reinstall behavior before selecting an adapter; never silently fall back.
+
+Prefer SDK-first, native protected storage and a web memory-only candidate, with
+live server-side session/account/membership gates. Ordinary SSR shares browser
+credentials; it does not supply a server-only vault. If the founder rejects browser
+JS token exposure/reload UX, evaluate web-only BFF before a universal custom system.
+SDK-first avoids an additional proxy/vault availability and key-recovery dependency.
+Supabase built-in session-lifetime features require Pro; no purchase is approved.
+
+No live SDK, revocation/RLS, provider Auth fresh-auth/reset, recovery or latency
+prototype was run in P1-01. These remain P1-18 acceptance gates after prerequisite
+configuration/schema work. Existing timeout, direct-provider and account-deletion
+requirements are unchanged. See the [research comparison](../research/p1-01-toolchain.md)
+for alternatives, dated cost examples, official sources and explicit limitations.

@@ -47,6 +47,8 @@ from pending GitHub and product work.
 
 - [Proposed Phase 1 implementation sequence](planning/phase-1-proposal.md)
 
+- [P1-01 toolchain research and blockers](research/p1-01-toolchain.md)
+
 ## Status vocabulary
 
 | Status | Evidence required |

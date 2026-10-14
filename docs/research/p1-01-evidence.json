@@ -1,0 +1,517 @@
+{
+  "date": "2026-10-14",
+  "scope": "Disposable synthetic template only; no production application or native builds",
+  "node": "24.22.0",
+  "npm": "11.19.1",
+  "template": "57.0.31",
+  "create_expo_app": "5.0.0",
+  "lockfile_sha256": "ab5a9a96dd289bbc04f8f534e091e2fead198bc856864f61f5d152c15fbcb40f",
+  "observed_latest": {
+    "expo": "57.0.29",
+    "react-native": "0.87.1",
+    "expo-router": "57.0.27",
+    "typescript": "7.0.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-native-web": "0.21.4",
+    "expo-template-default": "57.0.31",
+    "create-expo-app": "5.0.0",
+    "jest-expo": "57.0.6",
+    "eslint-config-expo": "57.0.2",
+    "@supabase/supabase-js": "2.117.3",
+    "@testing-library/react-native": "14.1.0",
+    "@playwright/test": "1.64.1",
+    "prettier": "3.9.10",
+    "eslint": "10.12.0",
+    "jest": "30.5.2",
+    "expo-secure-store": "57.0.4"
+  },
+  "audit_counts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 16,
+    "high": 48,
+    "critical": 0,
+    "total": 64
+  },
+  "audit_findings": [
+    {
+      "package": "@expo/cli",
+      "severity": "high",
+      "direct": false,
+      "range": "<=0.0.0-canary-20231123-1b19f96-4 || >=0.0.1-canary-20231125-d600e44",
+      "advisories": []
+    },
+    {
+      "package": "@expo/code-signing-certificates",
+      "severity": "high",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@expo/config",
+      "severity": "moderate",
+      "direct": false,
+      "range": "<=0.0.1-canary-20240418-8d74597 || >=3.3.23-alpha.0",
+      "advisories": []
+    },
+    {
+      "package": "@expo/config-plugins",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@expo/inline-modules",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=0.0.2-canary-20260409-6fc2991",
+      "advisories": []
+    },
+    {
+      "package": "@expo/local-build-cache-provider",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@expo/metro",
+      "severity": "high",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@expo/metro-config",
+      "severity": "high",
+      "direct": false,
+      "range": "<=0.0.1-canary-20240418-8d74597 || >=0.1.49-alpha.0",
+      "advisories": []
+    },
+    {
+      "package": "@expo/prebuild-config",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@istanbuljs/load-nyc-config",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@jest/console",
+      "severity": "high",
+      "direct": false,
+      "range": "25.4.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "@jest/core",
+      "severity": "high",
+      "direct": false,
+      "range": "<=30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "@jest/environment",
+      "severity": "high",
+      "direct": false,
+      "range": "<=30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "@jest/expect",
+      "severity": "high",
+      "direct": false,
+      "range": "<=30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "@jest/fake-timers",
+      "severity": "high",
+      "direct": false,
+      "range": "<=30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "@jest/globals",
+      "severity": "high",
+      "direct": false,
+      "range": "<=30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "@jest/reporters",
+      "severity": "high",
+      "direct": false,
+      "range": "<=30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "@jest/test-result",
+      "severity": "high",
+      "direct": false,
+      "range": "25.4.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "@jest/test-sequencer",
+      "severity": "high",
+      "direct": false,
+      "range": "<=30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "@jest/transform",
+      "severity": "high",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@react-native/community-cli-plugin",
+      "severity": "high",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@react-native/jest-preset",
+      "severity": "high",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@react-native/metro-config",
+      "severity": "high",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "@react-native/virtualized-lists",
+      "severity": "high",
+      "direct": false,
+      "range": "0.85.0-nightly-20260108-1236b6be4 - 0.87.0-rc.4",
+      "advisories": []
+    },
+    {
+      "package": "argparse",
+      "severity": "moderate",
+      "direct": false,
+      "range": "1.0.0 - 1.0.10",
+      "advisories": []
+    },
+    {
+      "package": "babel-jest",
+      "severity": "high",
+      "direct": false,
+      "range": ">=24.2.0-alpha.0",
+      "advisories": []
+    },
+    {
+      "package": "babel-plugin-istanbul",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=6.0.0-beta.0",
+      "advisories": []
+    },
+    {
+      "package": "braces",
+      "severity": "high",
+      "direct": false,
+      "range": "*",
+      "advisories": [
+        {
+          "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+          "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "package": "create-jest",
+      "severity": "high",
+      "direct": false,
+      "range": "29.7.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "decode-uri-component",
+      "severity": "moderate",
+      "direct": false,
+      "range": "<=0.4.2",
+      "advisories": [
+        {
+          "title": "decode-uri-component: Denial of service via exponential decoding of malformed percent-encoded input",
+          "url": "https://github.com/advisories/GHSA-vcc3-ghjq-m6fr",
+          "severity": "moderate"
+        }
+      ]
+    },
+    {
+      "package": "expect",
+      "severity": "high",
+      "direct": false,
+      "range": "21.0.0-beta.1 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "expo",
+      "severity": "high",
+      "direct": true,
+      "range": ">=45.0.0-beta.1",
+      "advisories": []
+    },
+    {
+      "package": "expo-router",
+      "severity": "moderate",
+      "direct": true,
+      "range": "1.2.2 - 3.1.2 || 5.2.0-canary-20250611-f0afe80 - 58.0.12",
+      "advisories": []
+    },
+    {
+      "package": "expo-splash-screen",
+      "severity": "moderate",
+      "direct": true,
+      "range": "55.0.10-canary-20260424-7bedc9d - 55.0.10-canary-20260429-a5e59cf || >=56.0.0-canary-20260212-4f61309",
+      "advisories": []
+    },
+    {
+      "package": "jest",
+      "severity": "high",
+      "direct": true,
+      "range": "24.2.0-alpha.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-circus",
+      "severity": "high",
+      "direct": false,
+      "range": "20.1.0-alpha.1 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-cli",
+      "severity": "high",
+      "direct": false,
+      "range": "23.5.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-config",
+      "severity": "high",
+      "direct": false,
+      "range": "18.1.0 - 18.5.0-alpha.7da3df39 || 23.5.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-environment-jsdom",
+      "severity": "high",
+      "direct": false,
+      "range": "24.2.0-alpha.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-environment-node",
+      "severity": "high",
+      "direct": false,
+      "range": "24.2.0-alpha.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-expo",
+      "severity": "high",
+      "direct": true,
+      "range": ">=33.0.0-rc.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-haste-map",
+      "severity": "high",
+      "direct": false,
+      "range": "18.1.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-message-util",
+      "severity": "high",
+      "direct": false,
+      "range": "18.5.0-alpha.7da3df39 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-resolve",
+      "severity": "high",
+      "direct": false,
+      "range": "18.1.0 - 19.0.2 || 24.2.0-alpha.0 - 24.5.0 || 27.1.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-resolve-dependencies",
+      "severity": "high",
+      "direct": false,
+      "range": "27.0.0-next.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-runner",
+      "severity": "high",
+      "direct": false,
+      "range": "21.0.0-alpha.1 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-runtime",
+      "severity": "high",
+      "direct": false,
+      "range": "18.1.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-snapshot",
+      "severity": "high",
+      "direct": false,
+      "range": "23.3.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "jest-watch-typeahead",
+      "severity": "high",
+      "direct": false,
+      "range": "0.6.0 - 2.2.2",
+      "advisories": []
+    },
+    {
+      "package": "jest-watcher",
+      "severity": "high",
+      "direct": false,
+      "range": "25.4.0 - 30.2.0",
+      "advisories": []
+    },
+    {
+      "package": "js-yaml",
+      "severity": "moderate",
+      "direct": false,
+      "range": "3.2.7 - 3.15.2",
+      "advisories": []
+    },
+    {
+      "package": "metro",
+      "severity": "high",
+      "direct": false,
+      "range": ">=0.71.0",
+      "advisories": []
+    },
+    {
+      "package": "metro-config",
+      "severity": "high",
+      "direct": false,
+      "range": ">=0.71.0",
+      "advisories": []
+    },
+    {
+      "package": "metro-file-map",
+      "severity": "high",
+      "direct": false,
+      "range": "*",
+      "advisories": []
+    },
+    {
+      "package": "metro-transform-worker",
+      "severity": "high",
+      "direct": false,
+      "range": ">=0.71.0",
+      "advisories": []
+    },
+    {
+      "package": "micromatch",
+      "severity": "high",
+      "direct": false,
+      "range": ">=0.2.0",
+      "advisories": []
+    },
+    {
+      "package": "node-forge",
+      "severity": "high",
+      "direct": false,
+      "range": "*",
+      "advisories": [
+        {
+          "title": "node-forge RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements",
+          "url": "https://github.com/advisories/GHSA-86w9-cpqp-85rv",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "package": "query-string",
+      "severity": "moderate",
+      "direct": false,
+      "range": "5.0.0 - 9.4.1",
+      "advisories": []
+    },
+    {
+      "package": "react-native",
+      "severity": "high",
+      "direct": true,
+      "range": ">=0.73.0-nightly-20230506-1af868c52",
+      "advisories": []
+    },
+    {
+      "package": "react-native-reanimated",
+      "severity": "high",
+      "direct": true,
+      "range": "3.20.0-nightly-20250722-b6c8b9a3c - 4.0.0-nightly-20250309-9ce9085cb || 4.2.0-nightly-20250829-e8916d7ed - 4.2.0-nightly-20251017-235c127fd || 4.4.0-nightly-20260325-414e8adaf - 4.7.1",
+      "advisories": []
+    },
+    {
+      "package": "react-native-worklets",
+      "severity": "high",
+      "direct": true,
+      "range": ">=0.8.0-bundle-mode-preview-1",
+      "advisories": []
+    },
+    {
+      "package": "sprintf-js",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": [
+        {
+          "title": "sprintf-js vulnerable to denial of service through unbounded precision specifiers",
+          "url": "https://github.com/advisories/GHSA-hp3w-g68c-fv3c",
+          "severity": "moderate"
+        }
+      ]
+    },
+    {
+      "package": "uuid",
+      "severity": "moderate",
+      "direct": false,
+      "range": "<11.1.1",
+      "advisories": [
+        {
+          "title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "severity": "moderate"
+        }
+      ]
+    },
+    {
+      "package": "xcode",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=0.9.2",
+      "advisories": []
+    }
+  ]
+}

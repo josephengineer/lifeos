@@ -22,3 +22,18 @@ compatibility and SSR requirements still need validation.
 
 Evidence: [official sources](../architecture/sources.md). Revisit if platform
 requirements materially diverge or worker limits prevent required processing.
+
+## P1-01 universal architecture evidence: 2026-10-14
+
+Founder approved the direction and bounded research; this ADR's implementation
+proposal remains subject to final acceptance. SDK 57/Router 57 support one client
+with thin routes, shared domain packages and platform adapters. Disposable web
+static export and Android/iOS JS bundle exports passed; native binaries/device
+behavior were not tested. Recommend static web initially, with no private data in
+build-time HTML. SSR/BFF hosting requires a specific need; separate web/native
+applications and microservices remain higher-maintenance alternatives.
+
+Exact core pins and toolchain blockers are in [ADR-0004](0004-foundation-tooling.md)
+and the [research report](../research/p1-01-toolchain.md). Windows handles JS and
+Android tooling; iOS native compilation/simulation needs macOS/Xcode or separately
+approved cloud builds. iOS 16.4+ device support needs founder confirmation.
