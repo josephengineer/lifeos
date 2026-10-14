@@ -16,8 +16,8 @@ Phase 1 remains Planned and is not authorized for implementation.
   it is not the required Foundation check.
 - [Issue #1](https://github.com/josephengineer/lifeos/issues/1) closed after merge.
 - This branch proposes the completion record and detailed Phase 1 scope through
-  a separate PR; its merge needs separate founder authorization. See the
-  [branch PR listing](https://github.com/josephengineer/lifeos/pulls).
+  [draft PR #24](https://github.com/josephengineer/lifeos/pull/24); its merge needs
+  separate founder authorization. Final-head CI evidence is recorded on that PR.
 
 ## Completed scope
 
